@@ -337,52 +337,45 @@
             opacity: 0.6;
         }
 
-        /* ===== ABOUT ===== */
-        .about-grid {
-            display: grid;
-            grid-template-columns: 280px 1fr;
-            gap: 4rem;
-            align-items: start;
+        /* ===== ABOUT - FLOATING PHOTO LAYOUT ===== */
+        .about-wrapper {
+            display: flex;
+            gap: 3rem;
+            align-items: flex-start;
         }
 
         .about-photo {
-            position: sticky;
-            top: 120px;
+            flex-shrink: 0;
+            width: 220px;
         }
 
         .photo-frame {
             width: 100%;
-            aspect-ratio: 1;
+            aspect-ratio: 3/4;
             border-radius: 12px;
             overflow: hidden;
             border: 1px solid var(--border-subtle);
             background: var(--bg-secondary);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 1rem;
-            color: var(--text-muted);
-            font-family: var(--font-mono);
-            font-size: 0.8rem;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
         }
 
-        .photo-frame svg {
-            width: 48px;
-            height: 48px;
-            opacity: 0.3;
+        .photo-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
         }
 
         .about-content {
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
+            flex: 1;
+            min-width: 0;
         }
 
         .about-text {
             font-size: 1.05rem;
             line-height: 1.8;
             color: var(--text-secondary);
+            margin-bottom: 1.5rem;
         }
 
         .about-text strong {
@@ -393,15 +386,15 @@
         .metrics-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 1.5rem;
-            margin: 1rem 0;
+            gap: 1rem;
+            margin: 2rem 0;
         }
 
         .metric-card {
             background: var(--bg-card);
             border: 1px solid var(--border-subtle);
             border-radius: 10px;
-            padding: 1.5rem;
+            padding: 1.2rem;
             transition: all 0.3s ease;
         }
 
@@ -412,21 +405,21 @@
 
         .metric-value {
             font-family: var(--font-display);
-            font-size: 2rem;
+            font-size: 1.6rem;
             font-weight: 700;
             color: var(--accent-cyan);
             line-height: 1;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.4rem;
         }
 
         .metric-label {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: var(--text-muted);
             line-height: 1.4;
         }
 
         .skills-section {
-            margin-top: 1rem;
+            margin-top: 2rem;
         }
 
         .skills-title {
@@ -864,14 +857,18 @@
 
         /* ===== RESPONSIVE ===== */
         @media (max-width: 900px) {
-            .about-grid {
-                grid-template-columns: 1fr;
+            .about-wrapper {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
             }
 
             .about-photo {
-                position: relative;
-                top: 0;
-                max-width: 200px;
+                width: 180px;
+            }
+
+            .metrics-grid {
+                grid-template-columns: 1fr;
             }
 
             .projects-grid {
@@ -890,10 +887,6 @@
 
             .cert-meta {
                 text-align: left;
-            }
-
-            .metrics-grid {
-                grid-template-columns: 1fr;
             }
         }
 
@@ -981,23 +974,20 @@
             <h2 class="section-title">About</h2>
             <div class="section-divider"></div>
         </div>
-        <div class="about-grid">
-            <div class="about-photo reveal reveal-delay-1">
+        <div class="about-wrapper reveal">
+            <div class="about-photo">
                 <div class="photo-frame">
-    <img src="profile.png" alt="Elvijs Strads" style="width:100%;height:100%;object-fit:cover;">
-</div>
+                    <img src="profile.jpg" alt="Elvijs Strads">
+                </div>
+            </div>
             <div class="about-content">
-                <div class="about-text reveal reveal-delay-1">
-                    <p>
-                        With over <strong>8 years of experience</strong> spanning B2B sales, operations, quality assurance, and data analytics, I've built a career at the intersection of business and technology. My journey from customer-facing roles to technical positions has given me a unique perspective on what actually drives operational value.
-                    </p>
-                </div>
-                <div class="about-text reveal reveal-delay-2">
-                    <p>
-                        Currently at <strong>Tilde</strong>, I lead process optimization and AI integration within localization workflows. I redesign inefficient processes, implement AI-driven solutions, and build scalable systems that reduce manual work while improving operational output.
-                    </p>
-                </div>
-                <div class="metrics-grid reveal reveal-delay-2">
+                <p class="about-text">
+                    With over <strong>8 years of experience</strong> spanning B2B sales, operations, quality assurance, and data analytics, I've built a career at the intersection of business and technology. My journey from customer-facing roles to technical positions has given me a unique perspective on what actually drives operational value.
+                </p>
+                <p class="about-text">
+                    Currently at <strong>Tilde</strong>, I lead process optimization and AI integration within localization workflows. I redesign inefficient processes, implement AI-driven solutions, and build scalable systems that reduce manual work while improving operational output.
+                </p>
+                <div class="metrics-grid">
                     <div class="metric-card">
                         <div class="metric-value">56→34</div>
                         <div class="metric-label">Workflow steps reduced</div>
@@ -1011,7 +1001,7 @@
                         <div class="metric-label">Cost reduction delivered</div>
                     </div>
                 </div>
-                <div class="skills-section reveal reveal-delay-3">
+                <div class="skills-section">
                     <div class="skills-title">Technical Skills</div>
                     <div class="skills-cloud">
                         <span class="skill-pill">Python</span>
