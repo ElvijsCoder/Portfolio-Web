@@ -7,6 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- NOTE: removed <base target="_blank"> — it was breaking internal anchor nav links -->
     <style>
         :root {
             --bg-primary: #0c0c10;
@@ -173,6 +174,86 @@
             padding-bottom: 4rem;
         }
 
+        .hero-layout {
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .hero-left {
+            min-width: 0;
+        }
+
+        .hero-right {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .hero-photo-frame {
+            width: 100%;
+            max-width: 280px;
+            aspect-ratio: 3/4;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--border-subtle);
+            background: var(--bg-secondary);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(0,212,255,0.05);
+            position: relative;
+        }
+
+        .hero-photo-frame::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 16px;
+            box-shadow: inset 0 0 40px rgba(0,0,0,0.3);
+            pointer-events: none;
+        }
+
+        .hero-photo-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .hero-side-skills {
+            width: 100%;
+            max-width: 280px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 1.2rem 1.4rem;
+        }
+
+        .hero-side-skills-label {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 0.8rem;
+        }
+
+        .hero-side-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+        }
+
+        .hero-side-pill {
+            padding: 0.25rem 0.7rem;
+            background: rgba(0,212,255,0.05);
+            border: 1px solid rgba(0,212,255,0.1);
+            border-radius: 100px;
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            color: var(--text-secondary);
+        }
+
         .hero-label {
             font-family: var(--font-mono);
             font-size: 0.75rem;
@@ -195,10 +276,11 @@
 
         .hero-name {
             font-family: var(--font-display);
-            font-size: clamp(3rem, 8vw, 6.5rem);
+            font-size: clamp(2.8rem, 6vw, 5.5rem);
             font-weight: 700;
             line-height: 1.05;
             letter-spacing: -0.03em;
+            white-space: nowrap;
             margin-bottom: 1.5rem;
             background: linear-gradient(180deg, #fff 0%, #a0a0b0 100%);
             -webkit-background-clip: text;
@@ -857,6 +939,32 @@
 
         /* ===== RESPONSIVE ===== */
         @media (max-width: 900px) {
+            .hero-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-right {
+                flex-direction: row;
+                justify-content: center;
+                align-items: flex-start;
+            }
+
+            .hero-photo-frame {
+                max-width: 160px;
+            }
+
+            .hero-side-skills {
+                max-width: 260px;
+            }
+
+            .hero-right {
+                display: none;
+            }
+
+            .hero-name {
+                white-space: normal;
+            }
+
             .about-wrapper {
                 flex-direction: column;
                 align-items: center;
@@ -922,7 +1030,6 @@
             }
         }
     </style>
-<base target="_blank">
 </head>
 <body>
     <div class="progress-bar" id="progressBar"></div>
@@ -943,23 +1050,45 @@
 
     <!-- Hero -->
     <section id="hero">
-        <div class="hero-label">Portfolio / 2025</div>
-        <h1 class="hero-name">Elvijs<br>Strads</h1>
-        <p class="hero-title">
-            <span class="accent">Innovation & Process Manager</span> — AI Implementation & Workflow Architecture. Bridging operational excellence with intelligent automation.
-        </p>
-        <p class="hero-summary">
-            I thrive at the intersection of what is possible with AI and what is profitable for the business. Specializing in process architecture, strategic AI integration, and leading cross-functional teams through complex technical transitions.
-        </p>
-        <div class="hero-cta">
-            <a href="#projects" class="btn-primary">
-                View Projects
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
-            </a>
-            <a href="https://github.com/ElvijsCoder" target="_blank" class="btn-secondary">
-                GitHub
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-            </a>
+        <div class="hero-layout">
+            <div class="hero-left">
+                <div class="hero-label">Portfolio / 2025</div>
+                <h1 class="hero-name">Elvijs Strads</h1>
+                <p class="hero-title">
+                    <span class="accent">Innovation & Process Manager</span> — AI Implementation & Workflow Architecture. Bridging operational excellence with intelligent automation.
+                </p>
+                <p class="hero-summary">
+                    I thrive at the intersection of what is possible with AI and what is profitable for the business. Specializing in process architecture, strategic AI integration, and leading cross-functional teams through complex technical transitions.
+                </p>
+                <div class="hero-cta">
+                    <a href="#projects" class="btn-primary">
+                        View Projects
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+                    </a>
+                    <a href="https://github.com/ElvijsCoder" target="_blank" class="btn-secondary">
+                        GitHub
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                    </a>
+                </div>
+            </div>
+            <div class="hero-right">
+                <div class="hero-photo-frame">
+                    <img src="profile.jpg" alt="Elvijs Strads">
+                </div>
+                <div class="hero-side-skills">
+                    <div class="hero-side-skills-label">Technical Skills</div>
+                    <div class="hero-side-pills">
+                        <span class="hero-side-pill">Python</span>
+                        <span class="hero-side-pill">Power BI</span>
+                        <span class="hero-side-pill">SQL</span>
+                        <span class="hero-side-pill">Power Automate</span>
+                        <span class="hero-side-pill">AI Integration</span>
+                        <span class="hero-side-pill">Process Design</span>
+                        <span class="hero-side-pill">Data Modeling</span>
+                        <span class="hero-side-pill">Azure</span>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="scroll-hint">
             <span>Scroll</span>
@@ -1156,7 +1285,7 @@
                 </div>
                 <div class="cert-meta">
                     <span class="cert-status completed">COMPLETED</span>
-                    <div class="cert-date">2024</div>
+                    <div class="cert-date">2026</div>
                 </div>
             </div>
 
@@ -1183,24 +1312,15 @@
                 </div>
                 <div class="cert-meta">
                     <span class="cert-status in-progress">IN PROGRESS</span>
-                    <div class="cert-date">Expected 2025</div>
+                    <div class="cert-date">Expected 2026</div>
                 </div>
             </div>
 
+            <!-- Future cert hidden — uncomment to restore
             <div class="cert-card reveal" style="opacity: 0.5;">
-                <div class="cert-icon">➕</div>
-                <div class="cert-content">
-                    <h3>Future Certification</h3>
-                    <div class="cert-issuer">Your Next Credential</div>
-                    <p class="cert-desc">
-                        This is a placeholder for your next certification. As you complete new courses or earn new credentials, you can easily add them here following the same structure.
-                    </p>
-                </div>
-                <div class="cert-meta">
-                    <span class="cert-status in-progress" style="background: rgba(168,85,247,0.1); color: var(--accent-purple); border-color: rgba(168,85,247,0.2);">PLANNED</span>
-                    <div class="cert-date">TBD</div>
-                </div>
+                ...
             </div>
+            -->
         </div>
     </section>
 
@@ -1219,29 +1339,34 @@
     </footer>
 
     <script>
-        // ===== PROGRESS BAR =====
+        // ===== SCROLL: progress bar + nav =====
+        const progressBar = document.getElementById('progressBar');
         window.addEventListener('scroll', () => {
             const scrollTop = window.scrollY;
             const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-            const progress = (scrollTop / docHeight) * 100;
-            document.getElementById('progressBar').style.width = progress + '%';
-        });
+            progressBar.style.width = (scrollTop / docHeight) * 100 + '%';
+            navbar.classList.toggle('scrolled', scrollTop > 50);
+        }, { passive: true });
 
         // ===== NAVIGATION =====
         const navbar = document.getElementById('navbar');
         const mobileToggle = document.getElementById('mobileToggle');
         const navLinks = document.getElementById('navLinks');
 
-        window.addEventListener('scroll', () => {
-            navbar.classList.toggle('scrolled', window.scrollY > 50);
-        });
-
         mobileToggle.addEventListener('click', () => {
             navLinks.classList.toggle('active');
         });
 
-        document.querySelectorAll('.nav-links a').forEach(link => {
-            link.addEventListener('click', () => navLinks.classList.remove('active'));
+        document.querySelectorAll('.nav-links a, .btn-primary[href^="#"]').forEach(link => {
+            link.addEventListener('click', (e) => {
+                const href = link.getAttribute('href');
+                if (href && href.startsWith('#')) {
+                    e.preventDefault();
+                    navLinks.classList.remove('active');
+                    const target = document.querySelector(href);
+                    if (target) target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
         });
 
         // ===== SCROLL REVEAL =====
