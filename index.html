@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Elvijs Strads — Innovation & Process Manager</title>
+    <meta name="description" content="Elvijs Strads — Innovation & Process Manager specializing in AI implementation, workflow architecture, and operational automation. Remote-native, built to plug into any team.">
+    <meta property="og:title" content="Elvijs Strads — Innovation & Process Manager">
+    <meta property="og:description" content="Remote-native process & AI specialist. Turning operational complexity into scalable, AI-driven systems.">
+    <meta property="og:type" content="website">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -28,7 +32,7 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        html { scroll-behavior: smooth; }
+        html { scroll-behavior: auto; }
 
         body {
             font-family: var(--font-body);
@@ -130,7 +134,11 @@
             color: var(--text-primary);
         }
 
-        .nav-links a:hover::after {
+        .nav-links a.active {
+            color: var(--accent-cyan);
+        }
+
+        .nav-links a.active::after {
             width: 100%;
         }
 
@@ -317,8 +325,94 @@
             align-items: center;
         }
 
+        @keyframes heroPulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(0,212,255,0.0); }
+            50% { box-shadow: 0 0 0 8px rgba(0,212,255,0.08); }
+        }
+
         .btn-primary {
+            animation: heroPulse 3s ease-in-out 1.5s 3;
+        }
+
+        /* Experience timeline accent */
+        .exp-item {
+            position: relative;
+        }
+
+        .exp-item::before {
+            content: '';
+            position: absolute;
+            left: -2.5rem;
+            top: 0;
+            width: 2px;
+            height: 0;
+            background: var(--accent-gradient);
+            transition: height 0.4s ease;
+            opacity: 0;
+        }
+
+        .exp-item:hover::before {
+            height: 100%;
+            opacity: 1;
+        }
+
+        /* Skills grouping */
+        .skills-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .skills-group-label {
+            font-family: var(--font-mono);
+            font-size: 0.62rem;
+            color: var(--accent-cyan);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+            opacity: 0.7;
+        }
+
+        /* Cert icon — styled letter mark */
+        .cert-icon {
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+
+        /* Availability signal */
+        .availability {
             display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.5rem 1.2rem;
+            background: rgba(0,212,255,0.04);
+            border: 1px solid rgba(0,212,255,0.12);
+            border-radius: 100px;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .availability-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #22c55e;
+            box-shadow: 0 0 8px rgba(34,197,94,0.6);
+            animation: pulse-dot 2s ease-in-out infinite;
+            flex-shrink: 0;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(0.85); }
+        }
+
+        /* Metric counter */
+        .metric-value {
+            min-height: 1.6rem;
+        }
             align-items: center;
             gap: 0.6rem;
             padding: 0.9rem 2rem;
@@ -944,20 +1038,6 @@
             }
 
             .hero-right {
-                flex-direction: row;
-                justify-content: center;
-                align-items: flex-start;
-            }
-
-            .hero-photo-frame {
-                max-width: 160px;
-            }
-
-            .hero-side-skills {
-                max-width: 260px;
-            }
-
-            .hero-right {
                 display: none;
             }
 
@@ -1055,10 +1135,10 @@
                 <div class="hero-label">Portfolio / 2025</div>
                 <h1 class="hero-name">Elvijs Strads</h1>
                 <p class="hero-title">
-                    <span class="accent">Innovation & Process Manager</span> — AI Implementation & Workflow Architecture. Bridging operational excellence with intelligent automation.
+                    <span class="accent">Innovation & Process Manager</span> — turning operational complexity into scalable, AI-driven systems.
                 </p>
                 <p class="hero-summary">
-                    I thrive at the intersection of what is possible with AI and what is profitable for the business. Specializing in process architecture, strategic AI integration, and leading cross-functional teams through complex technical transitions.
+                    I find the processes no one has questioned in years — and rebuild them with automation and AI. Remote-native, and built to plug into any team, anywhere.
                 </p>
                 <div class="hero-cta">
                     <a href="#projects" class="btn-primary">
@@ -1073,7 +1153,7 @@
             </div>
             <div class="hero-right">
                 <div class="hero-photo-frame">
-                    <img src="profile.jpg" alt="Elvijs Strads">
+                    <img src="profile.jpg" alt="Elvijs Strads" loading="lazy">
                 </div>
                 <div class="hero-side-skills">
                     <div class="hero-side-skills-label">Technical Skills</div>
@@ -1106,15 +1186,15 @@
         <div class="about-wrapper reveal">
             <div class="about-photo">
                 <div class="photo-frame">
-                    <img src="profile.jpg" alt="Elvijs Strads">
+                    <img src="profile.jpg" alt="Elvijs Strads" loading="lazy">
                 </div>
             </div>
             <div class="about-content">
                 <p class="about-text">
-                    With over <strong>8 years of experience</strong> across operations, analytics, process transformation, and B2B environments, I specialize in bridging business strategy with AI-driven execution. My background spans customer operations, workforce analytics, quality assurance, and business intelligence — giving me a practical understanding of how to transform operational complexity into scalable, data-driven systems.
+                    At <strong>Tilde</strong>, I lead process transformation and AI integration across localization operations — redesigning workflows, eliminating manual effort, and building Power BI reporting systems that give <strong>15+ project managers</strong> and <strong>300+ linguists</strong> real visibility into their work.
                 </p>
                 <p class="about-text">
-                    Currently at <strong>Tilde</strong>, I lead process optimization and AI integration initiatives within localization operations. I redesign inefficient workflows, implement AI-supported operational solutions, and develop scalable reporting ecosystems in Power BI using both static and predictive data models. My focus is on improving operational visibility, reducing manual effort, and enabling faster, data-driven decision-making through automation, analytics, and intelligent workflow architecture.
+                    That work sits on <strong>8 years of experience</strong> across B2B sales, workforce analytics, and operations management — roles that gave me an unusually grounded view of what data, automation, and AI actually change for the people using them.
                 </p>
                 <div class="metrics-grid">
                     <div class="metric-card">
@@ -1132,21 +1212,34 @@
                 </div>
                 <div class="skills-section">
                     <div class="skills-title">Technical Skills</div>
-                    <div class="skills-cloud">
-                        <span class="skill-pill">Python</span>
-                        <span class="skill-pill">SQL</span>
-                        <span class="skill-pill">Power BI</span>
-                        <span class="skill-pill">Power Automate</span>
-                        <span class="skill-pill">AI Solution Architecture</span>
-                        <span class="skill-pill">RAG</span>
-                        <span class="skill-pill">Process Optimization</span>
-                        <span class="skill-pill">Data Modeling</span>
-                        <span class="skill-pill">Machine Learning</span>
-                        <span class="skill-pill">Git</span>
-                        <span class="skill-pill">Pandas</span>
-                        <span class="skill-pill">Flask</span>
-                        <span class="skill-pill">Docker</span>
-                        <span class="skill-pill">Azure</span>
+                    <div class="skills-group">
+                        <div class="skills-group-label">Data & BI</div>
+                        <div class="skills-cloud">
+                            <span class="skill-pill">Python</span>
+                            <span class="skill-pill">SQL</span>
+                            <span class="skill-pill">Power BI</span>
+                            <span class="skill-pill">Pandas</span>
+                            <span class="skill-pill">Data Modeling</span>
+                        </div>
+                    </div>
+                    <div class="skills-group">
+                        <div class="skills-group-label">Automation & AI</div>
+                        <div class="skills-cloud">
+                            <span class="skill-pill">Power Automate</span>
+                            <span class="skill-pill">AI Solution Architecture</span>
+                            <span class="skill-pill">RAG</span>
+                            <span class="skill-pill">Machine Learning</span>
+                            <span class="skill-pill">Process Optimization</span>
+                        </div>
+                    </div>
+                    <div class="skills-group">
+                        <div class="skills-group-label">Infrastructure</div>
+                        <div class="skills-cloud">
+                            <span class="skill-pill">Azure</span>
+                            <span class="skill-pill">Docker</span>
+                            <span class="skill-pill">Flask</span>
+                            <span class="skill-pill">Git</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1215,7 +1308,7 @@
                     <h3>Sales & Account Manager</h3>
                     <div class="exp-company">FLYTE</div>
                     <p class="exp-desc">
-                        Guided global B2B clients through all stages of product launch, from personalized onboarding to strategic marketing and sales training. Empowered clients to find perfect product placements, build impactful campaigns, and tell compelling stories that connected design with emotion.
+                        Managed global B2B client relationships across product launches, onboarding, and growth strategy. Working directly with commercial teams across multiple markets gave me an early, practical understanding of how operational decisions translate into revenue outcomes — a lens I've carried into every analytical and process role since.
                     </p>
                     <div class="exp-highlights">
                         <span class="exp-tag">B2B Sales</span>
@@ -1230,7 +1323,7 @@
                     <h3>Organizational Effectiveness Manager</h3>
                     <div class="exp-company">FINITERA</div>
                     <p class="exp-desc">
-                        Drove a 120% profit increase in the Albanian branch through Lean methodology implementation. Eliminated wasteful tasks and optimized agent workflows. Developed and launched a customer chatbot that boosted satisfaction by 20%. Spearheaded the development and implementation of an NPS system and strategy.
+                        Deployed Lean methodology in an underperforming branch operation, contributing to a significant turnaround in profitability. Reduced wasteful agent workflows, launched a customer chatbot that improved satisfaction scores by 20%, and built the company's first structured NPS measurement system.
                     </p>
                     <div class="exp-highlights">
                         <span class="exp-tag">Lean Methodology</span>
@@ -1264,7 +1357,7 @@
         </div>
         <div class="certs-grid">
             <div class="cert-card reveal">
-                <div class="cert-icon">🎓</div>
+                <div class="cert-icon">IBM</div>
                 <div class="cert-content">
                     <h3>AI Engineering Professional Certificate</h3>
                     <div class="cert-issuer">IBM</div>
@@ -1279,9 +1372,7 @@
                         <span class="cert-skill">Python</span>
                         <span class="cert-skill">TensorFlow</span>
                     </div>
-                    <a href="#" class="cert-link" onclick="alert('Add your Coursera verification link here'); return false;">
-                        Verify Credential →
-                    </a>
+                    <span class="cert-link" style="opacity:0.35; cursor:default;">Verification link coming soon</span>
                 </div>
                 <div class="cert-meta">
                     <span class="cert-status completed">COMPLETED</span>
@@ -1290,7 +1381,7 @@
             </div>
 
             <div class="cert-card reveal">
-                <div class="cert-icon">🐍</div>
+                <div class="cert-icon">PY</div>
                 <div class="cert-content">
                     <h3>Python Development Professional Certificate</h3>
                     <div class="cert-issuer">Microsoft</div>
@@ -1328,19 +1419,28 @@
     <footer>
         <div class="footer-content">
             <div class="footer-name">Elvijs Strads</div>
-            <p class="footer-tagline">Building systems that reduce manual work while increasing team capacity.</p>
+            <div class="availability">
+                <span class="availability-dot"></span>
+                Available for remote engagements
+            </div>
+            <p class="footer-tagline">Remote-native. Building the kind of systems that make people wonder why they ever did it manually.</p>
             <div class="footer-links">
                 <a href="https://github.com/ElvijsCoder" target="_blank">GitHub</a>
                 <a href="https://www.linkedin.com/in/elvijsstrads" target="_blank">LinkedIn</a>
                 <a href="mailto:stradselvijs@gmail.com">Email</a>
             </div>
-            <p class="footer-copy">© 2025 — Built with intention. Continuously evolving.</p>
+            <p class="footer-copy">© 2026 — Built with intention. Continuously evolving.</p>
         </div>
     </footer>
 
     <script>
-        // ===== SCROLL: progress bar + nav =====
+        // ===== NAVIGATION SETUP =====
+        const navbar = document.getElementById('navbar');
+        const mobileToggle = document.getElementById('mobileToggle');
+        const navLinks = document.getElementById('navLinks');
         const progressBar = document.getElementById('progressBar');
+
+        // ===== SCROLL: progress bar + nav =====
         window.addEventListener('scroll', () => {
             const scrollTop = window.scrollY;
             const docHeight = document.documentElement.scrollHeight - window.innerHeight;
@@ -1348,15 +1448,17 @@
             navbar.classList.toggle('scrolled', scrollTop > 50);
         }, { passive: true });
 
-        // ===== NAVIGATION =====
-        const navbar = document.getElementById('navbar');
-        const mobileToggle = document.getElementById('mobileToggle');
-        const navLinks = document.getElementById('navLinks');
-
+        // ===== MOBILE TOGGLE =====
         mobileToggle.addEventListener('click', () => {
             navLinks.classList.toggle('active');
         });
 
+        // Close mobile nav on outside click
+        document.addEventListener('click', (e) => {
+            if (!navbar.contains(e.target)) navLinks.classList.remove('active');
+        });
+
+        // ===== SMOOTH SCROLL + CLOSE MOBILE NAV =====
         document.querySelectorAll('.nav-links a, .btn-primary[href^="#"]').forEach(link => {
             link.addEventListener('click', (e) => {
                 const href = link.getAttribute('href');
@@ -1369,33 +1471,79 @@
             });
         });
 
+        // ===== ACTIVE NAV + URL HASH TRACKING =====
+        const sections = document.querySelectorAll('section[id]');
+        const navAnchors = document.querySelectorAll('.nav-links a');
+
+        const sectionObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.getAttribute('id');
+                    navAnchors.forEach(a => {
+                        a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+                    });
+                    // Silently update hash without triggering a scroll jump
+                    if (id !== 'hero') {
+                        history.replaceState(null, '', '#' + id);
+                    } else {
+                        history.replaceState(null, '', window.location.pathname);
+                    }
+                }
+            });
+        }, { threshold: 0.4 });
+
+        sections.forEach(s => sectionObserver.observe(s));
+
         // ===== SCROLL REVEAL =====
         const revealObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
+                    // Trigger metric counter if applicable
+                    const counter = entry.target.querySelector('[data-count]');
+                    if (counter) animateCounter(counter);
                 }
             });
         }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
 
         document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
-        // ===== GITHUB FETCH =====
+        // ===== METRIC COUNTER ANIMATION =====
+        function animateCounter(el) {
+            if (el.dataset.animated) return;
+            el.dataset.animated = 'true';
+            const target = el.dataset.count;
+            // Only animate purely numeric targets
+            if (!/^\d+$/.test(target)) return;
+            const end = parseInt(target);
+            const duration = 1200;
+            const start = performance.now();
+            const from = Math.max(0, end - 30);
+            function tick(now) {
+                const elapsed = now - start;
+                const progress = Math.min(elapsed / duration, 1);
+                const ease = 1 - Math.pow(1 - progress, 3);
+                el.textContent = Math.round(from + (end - from) * ease);
+                if (progress < 1) requestAnimationFrame(tick);
+            }
+            requestAnimationFrame(tick);
+        }
+
+        // ===== GITHUB FETCH with XSS sanitization =====
+        function sanitize(str) {
+            if (!str) return '';
+            return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+        }
+
         async function fetchProjects() {
             const grid = document.getElementById('projectsGrid');
-
             try {
                 const res = await fetch('https://api.github.com/users/ElvijsCoder/repos?sort=updated&per_page=6');
                 if (!res.ok) throw new Error('Fetch failed');
-
                 const repos = await res.json();
 
                 if (repos.length === 0) {
-                    grid.innerHTML = `
-                        <div class="projects-empty">
-                            <p>No public repositories yet.</p>
-                            <a href="https://github.com/ElvijsCoder" target="_blank">Visit GitHub Profile →</a>
-                        </div>`;
+                    grid.innerHTML = `<div class="projects-empty"><p>No public repositories yet.</p><a href="https://github.com/ElvijsCoder" target="_blank">Visit GitHub Profile →</a></div>`;
                     return;
                 }
 
@@ -1407,37 +1555,36 @@
 
                 grid.innerHTML = repos.map(repo => {
                     const color = langColors[repo.language] || '#8b8b8b';
+                    const name = sanitize(repo.name);
+                    const desc = sanitize(repo.description);
+                    const lang = sanitize(repo.language);
+                    const url = sanitize(repo.html_url);
                     return `
                         <div class="project-card reveal">
                             <div class="project-header">
                                 <h3 class="project-name">
-                                    <a href="${repo.html_url}" target="_blank" rel="noopener">${repo.name}</a>
+                                    <a href="${url}" target="_blank" rel="noopener noreferrer">${name}</a>
                                 </h3>
                                 <div class="project-stars">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="#ffd700"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
                                     ${repo.stargazers_count}
                                 </div>
                             </div>
-                            <p class="project-desc">${repo.description || 'No description available'}</p>
+                            <p class="project-desc">${desc || 'No description available'}</p>
                             <div class="project-footer">
                                 <div class="project-lang">
                                     <span class="lang-dot" style="background: ${color}"></span>
-                                    ${repo.language || 'Unknown'}
+                                    ${lang || 'Unknown'}
                                 </div>
-                                <a href="${repo.html_url}" target="_blank" class="project-link">View Code →</a>
+                                <a href="${url}" target="_blank" rel="noopener noreferrer" class="project-link">View Code →</a>
                             </div>
-                        </div>
-                    `;
+                        </div>`;
                 }).join('');
 
                 document.querySelectorAll('#projectsGrid .reveal').forEach(el => revealObserver.observe(el));
 
             } catch (err) {
-                grid.innerHTML = `
-                    <div class="projects-empty">
-                        <p>Unable to load GitHub repositories.</p>
-                        <a href="https://github.com/ElvijsCoder" target="_blank">Visit GitHub Profile →</a>
-                    </div>`;
+                grid.innerHTML = `<div class="projects-empty"><p>Unable to load GitHub repositories.</p><a href="https://github.com/ElvijsCoder" target="_blank">Visit GitHub Profile →</a></div>`;
             }
         }
 
