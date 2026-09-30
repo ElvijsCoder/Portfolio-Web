@@ -1,6 +1,6 @@
 /* =========================================================
    Elvijs Strads — Portfolio
-   GSAP + Lenis + canvas + counters + rotator + Tier 2 craft
+   GSAP + Lenis + canvas + counters + rotator + Tier 2 craft + Tier 3
    ========================================================= */
 (function () {
     'use strict';
@@ -517,7 +517,79 @@
     })();
 
     /* ---------------------------------------------------------
-       12. GITHUB FETCH
+       12. TIER 3 — THEME TOGGLE
+       --------------------------------------------------------- */
+    (function themeToggle() {
+        const btn = document.getElementById('themeToggle');
+        if (!btn) return;
+
+        function sync() {
+            const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+            btn.setAttribute('aria-pressed', String(isLight));
+            btn.setAttribute('aria-label', isLight ? 'Switch to dark theme' : 'Switch to light theme');
+        }
+        sync();
+
+        btn.addEventListener('click', () => {
+            const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+            const next = isLight ? 'dark' : 'light';
+
+            if (next === 'dark') {
+                document.documentElement.removeAttribute('data-theme');
+            } else {
+                document.documentElement.setAttribute('data-theme', 'light');
+            }
+
+            try { localStorage.setItem('theme', next); } catch (e) {}
+            sync();
+
+            // Refresh ScrollTrigger so layout measurements stay accurate
+            if (hasGsap && ScrollTrigger.refresh) {
+                requestAnimationFrame(() => ScrollTrigger.refresh());
+            }
+        });
+    })();
+
+    /* ---------------------------------------------------------
+       13. TIER 3 — LIVE LOCAL TIME (Europe/Riga)
+       --------------------------------------------------------- */
+    (function liveClock() {
+        const el = document.getElementById('localTime');
+        if (!el) return;
+
+        const formatter = new Intl.DateTimeFormat('en-GB', {
+            timeZone: 'Europe/Riga',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false,
+        });
+
+        function update() {
+            try {
+                el.textContent = formatter.format(new Date());
+            } catch (e) {
+                // Fallback if Intl / timezone unsupported
+                const d = new Date();
+                el.textContent =
+                    String(d.getHours()).padStart(2, '0') + ':' +
+                    String(d.getMinutes()).padStart(2, '0');
+            }
+        }
+
+        update();
+        // Update every 30s (so minute boundary drift is at most 30s)
+        setInterval(() => {
+            if (!document.hidden) update();
+        }, 30000);
+
+        // Refresh immediately when tab returns to foreground
+        document.addEventListener('visibilitychange', () => {
+            if (!document.hidden) update();
+        });
+    })();
+
+    /* ---------------------------------------------------------
+       14. GITHUB FETCH
        --------------------------------------------------------- */
     function sanitize(str) {
         if (!str) return '';
