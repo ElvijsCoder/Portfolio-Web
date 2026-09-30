@@ -20,7 +20,10 @@
             smoothWheel: true,
             wheelMultiplier: 0.9,
         });
-        function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+        function raf(time) {
+            if (!document.hidden) lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
         requestAnimationFrame(raf);
     }
 
@@ -469,7 +472,6 @@
             await navigator.clipboard.writeText(value);
             return true;
         } catch (e) {
-            // Fallback for non-secure contexts / older browsers
             const ta = document.createElement('textarea');
             ta.value = value;
             ta.setAttribute('readonly', '');
@@ -501,7 +503,6 @@
             }
 
             card.addEventListener('click', (e) => {
-                // Don't flip when clicking an interactive element inside the card
                 if (e.target.closest('a, button')) return;
                 toggle();
             });
@@ -606,7 +607,6 @@
                 newCards.forEach(el => el.classList.add('visible'));
             }
 
-            // Wire glow on the freshly rendered project cards
             if (finePointer && !reduceMotion) {
                 grid.querySelectorAll('[data-glow]').forEach(card => {
                     card.addEventListener('pointermove', (e) => {
