@@ -3,17 +3,19 @@
    ========================================================= */
 
 :root {
-    --bg-primary: #0c0c10;
+    --bg-primary: #0a0a0f;
     --bg-secondary: #111118;
     --bg-card: rgba(255,255,255,0.03);
     --text-primary: #f0f0f5;
     --text-secondary: #a8a8b8;
     --text-muted: #8a8a9a;
     --accent-cyan: #00d4ff;
-    --accent-purple: #a855f7;
-    --accent-gradient: linear-gradient(135deg, #00d4ff, #a855f7);
+    --accent-amber: #d4a853;
+    --accent-gradient: linear-gradient(135deg, #00d4ff, #d4a853);
     --border-subtle: rgba(255,255,255,0.06);
     --border-glow: rgba(0,212,255,0.15);
+    --ease-cinematic: cubic-bezier(0.22, 1, 0.36, 1);
+    --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
     --font-display: 'Space Grotesk', sans-serif;
     --font-body: 'Inter', sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
@@ -842,7 +844,7 @@ section {
 
 .cert-issuer {
     font-size: 0.9rem;
-    color: var(--accent-purple);
+    color: var(--accent-amber);
     font-weight: 500;
     margin-bottom: 0.5rem;
 }
@@ -867,7 +869,7 @@ section {
     border-radius: 4px;
     font-family: var(--font-mono);
     font-size: 0.7rem;
-    color: var(--accent-purple);
+    color: var(--accent-amber);
 }
 
 .cert-meta {
