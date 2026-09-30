@@ -8,8 +8,20 @@
     <meta name="description" content="Innovation & Process Manager specializing in AI implementation, workflow architecture, and operational automation. Based in Latvia, remote-native.">
     <link rel="canonical" href="https://strads.id.lv/">
 
-    <meta name="color-scheme" content="dark">
+    <meta name="color-scheme" content="dark light">
     <meta name="theme-color" content="#0a0a0f">
+
+    <!-- Theme flash prevention — must run before any CSS paints -->
+    <script>
+        (function () {
+            try {
+                var saved = localStorage.getItem('theme');
+                if (saved === 'light' || saved === 'dark') {
+                    document.documentElement.setAttribute('data-theme', saved);
+                }
+            } catch (e) {}
+        })();
+    </script>
 
     <!-- Open Graph / social previews -->
     <meta property="og:type" content="website">
@@ -88,8 +100,28 @@
                 <li><a href="#projects">Projects</a></li>
                 <li><a href="#certifications">Certificates</a></li>
             </ul>
-            <button class="mobile-toggle" id="mobileToggle" type="button"
-                    aria-label="Open menu" aria-expanded="false" aria-controls="navLinks">☰</button>
+            <div class="nav-actions">
+                <a class="nav-cv" href="/cv.pdf" download aria-label="Download CV (PDF)">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                        <polyline points="7 10 12 15 17 10"/>
+                        <line x1="12" y1="15" x2="12" y2="3"/>
+                    </svg>
+                    <span>CV</span>
+                </a>
+                <button class="nav-theme" id="themeToggle" type="button"
+                        aria-label="Switch theme" aria-pressed="false">
+                    <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                        <circle cx="12" cy="12" r="4"/>
+                        <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+                    </svg>
+                    <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                    </svg>
+                </button>
+                <button class="mobile-toggle" id="mobileToggle" type="button"
+                        aria-label="Open menu" aria-expanded="false" aria-controls="navLinks">☰</button>
+            </div>
         </nav>
     </header>
 
@@ -157,16 +189,6 @@
                 <div class="section-divider" aria-hidden="true"></div>
             </div>
             <div class="about-wrapper reveal">
-                <div class="about-photo">
-                    <div class="photo-frame">
-                        <picture>
-                            <source srcset="profile.avif" type="image/avif">
-                            <source srcset="profile.webp" type="image/webp">
-                            <img src="profile.jpg" alt="Elvijs Strads" width="440" height="587"
-                                 loading="lazy" decoding="async">
-                        </picture>
-                    </div>
-                </div>
                 <div class="about-content">
                     <p class="about-text">
                         At <strong>Tilde</strong>, I lead process transformation and AI integration across localization operations — redesigning workflows, eliminating manual effort, and building Power BI reporting systems that give <strong>15+ project managers</strong> and <strong>300+ linguists</strong> real visibility into their work.
@@ -221,6 +243,31 @@
                         </div>
                     </div>
                 </div>
+
+                <aside class="status-panel" aria-label="Status">
+                    <div class="status-header">
+                        <span class="status-dot" aria-hidden="true"></span>
+                        <span class="status-label">Status</span>
+                    </div>
+                    <div class="status-list">
+                        <div class="status-item">
+                            <span class="status-key">Location</span>
+                            <span class="status-val">Rīga, Latvia</span>
+                        </div>
+                        <div class="status-item">
+                            <span class="status-key">Local time</span>
+                            <span class="status-val status-val--mono" id="localTime">--:--</span>
+                        </div>
+                        <div class="status-item">
+                            <span class="status-key">Availability</span>
+                            <span class="status-val status-val--live">Open to offers</span>
+                        </div>
+                    </div>
+                    <div class="status-foot">
+                        <span class="status-foot-label">Currently</span>
+                        <span class="status-foot-value">Refining localization reporting at Tilde</span>
+                    </div>
+                </aside>
             </div>
         </section>
 
