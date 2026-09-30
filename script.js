@@ -5,35 +5,51 @@
 (function () {
     'use strict';
 
+    // Global guard: log any runtime error so issues are visible in any browser
+    window.addEventListener('error', function (e) {
+        console.error('[Portfolio] Runtime error:', e.message, e.filename, e.lineno);
+    });
+
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const finePointer  = window.matchMedia('(pointer: fine)').matches;
     const isMobile     = window.matchMedia('(max-width: 768px)').matches;
 
     /* ---------------------------------------------------------
-       1. LENIS SMOOTH SCROLL
+       1. LENIS SMOOTH SCROLL (defensive)
        --------------------------------------------------------- */
     let lenis = null;
-    if (typeof Lenis !== 'undefined' && !reduceMotion) {
-        lenis = new Lenis({
-            duration: 1.15,
-            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-            smoothWheel: true,
-            wheelMultiplier: 0.9,
-        });
-        function raf(time) {
-            if (!document.hidden) lenis.raf(time);
+    try {
+        if (typeof Lenis !== 'undefined' && !reduceMotion) {
+            lenis = new Lenis({
+                duration: 1.15,
+                easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+                smoothWheel: true,
+                wheelMultiplier: 0.9,
+            });
+            function raf(time) {
+                if (!document.hidden) lenis.raf(time);
+                requestAnimationFrame(raf);
+            }
             requestAnimationFrame(raf);
         }
-        requestAnimationFrame(raf);
+    } catch (err) {
+        console.warn('[Portfolio] Lenis init failed, falling back to native scroll:', err);
+        lenis = null;
     }
 
     /* ---------------------------------------------------------
-       2. GSAP SETUP
+       2. GSAP SETUP (defensive)
        --------------------------------------------------------- */
-    const hasGsap = typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined';
-    if (hasGsap) {
-        gsap.registerPlugin(ScrollTrigger);
-        if (lenis) lenis.on('scroll', ScrollTrigger.update);
+    let hasGsap = false;
+    try {
+        hasGsap = typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined';
+        if (hasGsap) {
+            gsap.registerPlugin(ScrollTrigger);
+            if (lenis) lenis.on('scroll', ScrollTrigger.update);
+        }
+    } catch (err) {
+        console.warn('[Portfolio] GSAP init failed, using CSS fallbacks:', err);
+        hasGsap = false;
     }
 
     /* ---------------------------------------------------------
@@ -85,7 +101,7 @@
     });
 
     /* ---------------------------------------------------------
-       5. SMOOTH ANCHOR SCROLL (Lenis-aware)
+       5. SMOOTH ANCHOR SCROLL
        --------------------------------------------------------- */
     document.querySelectorAll('a[href^="#"]').forEach(link => {
         link.addEventListener('click', (e) => {
@@ -130,7 +146,7 @@
     sections.forEach(s => spy.observe(s));
 
     /* ---------------------------------------------------------
-       7. SCROLL REVEAL (GSAP enhanced)
+       7. SCROLL REVEAL
        --------------------------------------------------------- */
     const revealEls = document.querySelectorAll('.reveal');
 
@@ -139,8 +155,7 @@
             gsap.fromTo(el,
                 { opacity: 0, y: 40 },
                 {
-                    opacity: 1,
-                    y: 0,
+                    opacity: 1, y: 0,
                     duration: 1.1,
                     ease: 'power3.out',
                     scrollTrigger: {
@@ -197,19 +212,13 @@
             const ease = 1 - Math.pow(1 - p, 3);
             const current = Math.round(to * ease);
 
-            if (format === 'arrow') {
-                el.textContent = from + '→' + current;
-            } else if (format === 'range') {
-                el.textContent = from + '-' + current + 'h';
-            } else if (format === 'percent') {
-                el.textContent = '~' + current + '%';
-            } else {
-                el.textContent = String(current);
-            }
+            if (format === 'arrow')        el.textContent = from + '→' + current;
+            else if (format === 'range')   el.textContent = from + '-' + current + 'h';
+            else if (format === 'percent') el.textContent = '~' + current + '%';
+            else                            el.textContent = String(current);
 
-            if (p < 1) {
-                requestAnimationFrame(frame);
-            } else {
+            if (p < 1) requestAnimationFrame(frame);
+            else {
                 el.textContent = formatFinal(format, from, to);
                 el.classList.remove('is-counting');
                 el.classList.add('is-complete');
@@ -254,7 +263,7 @@
     })();
 
     /* ---------------------------------------------------------
-       10. NODE NETWORK (hero canvas)
+       10. NODE NETWORK
        --------------------------------------------------------- */
     (function nodeNetwork() {
         const canvas = document.getElementById('heroCanvas');
@@ -319,10 +328,8 @@
 
                 p.x += p.vx;
                 p.y += p.vy;
-
                 if (p.x < 0 || p.x > w) p.vx *= -1;
                 if (p.y < 0 || p.y > h) p.vy *= -1;
-
                 if (p.pulse > 0) p.pulse *= 0.94;
 
                 ctx.beginPath();
@@ -340,11 +347,10 @@
                     const dy = p.y - q.y;
                     const d = Math.hypot(dx, dy);
                     if (d < LINK_DIST) {
-                        const a = (1 - d / LINK_DIST) * 0.22;
                         ctx.beginPath();
                         ctx.moveTo(p.x, p.y);
                         ctx.lineTo(q.x, q.y);
-                        ctx.globalAlpha = a;
+                        ctx.globalAlpha = (1 - d / LINK_DIST) * 0.22;
                         ctx.strokeStyle = col;
                         ctx.lineWidth = 1;
                         ctx.stroke();
@@ -356,7 +362,6 @@
                 }
             }
             ctx.globalAlpha = 1;
-
             if (visible) raf = requestAnimationFrame(draw);
         }
 
@@ -397,7 +402,7 @@
        11. TIER 2 — CRAFT LAYER
        --------------------------------------------------------- */
 
-    /* ----- 11a. Magnetic buttons ----- */
+    /* 11a. Magnetic buttons */
     (function magneticButtons() {
         if (!finePointer || reduceMotion) return;
 
@@ -410,15 +415,12 @@
             function loop() {
                 currentX += (targetX - currentX) * 0.18;
                 currentY += (targetY - currentY) * 0.18;
-
                 if (Math.abs(targetX - currentX) < 0.1 && Math.abs(targetY - currentY) < 0.1) {
-                    currentX = targetX;
-                    currentY = targetY;
+                    currentX = targetX; currentY = targetY;
                     el.style.transform = 'translate3d(' + currentX + 'px, ' + currentY + 'px, 0)';
                     raf = null;
                     return;
                 }
-
                 el.style.transform = 'translate3d(' + currentX + 'px, ' + currentY + 'px, 0)';
                 raf = requestAnimationFrame(loop);
             }
@@ -433,17 +435,15 @@
             }, { passive: true });
 
             el.addEventListener('pointerleave', () => {
-                targetX = 0;
-                targetY = 0;
+                targetX = 0; targetY = 0;
                 if (!raf) raf = requestAnimationFrame(loop);
             });
         });
     })();
 
-    /* ----- 11b. Card cursor glow ----- */
+    /* 11b. Card cursor glow */
     (function cardGlow() {
         if (!finePointer || reduceMotion) return;
-
         document.querySelectorAll('[data-glow]').forEach(card => {
             card.addEventListener('pointermove', (e) => {
                 const r = card.getBoundingClientRect();
@@ -453,7 +453,7 @@
         });
     })();
 
-    /* ----- 11c. Copy email + toast ----- */
+    /* 11c. Copy email + toast */
     const toastEl = document.getElementById('toast');
     let toastTimer = null;
 
@@ -462,9 +462,7 @@
         toastEl.textContent = message;
         toastEl.classList.add('is-visible');
         clearTimeout(toastTimer);
-        toastTimer = setTimeout(() => {
-            toastEl.classList.remove('is-visible');
-        }, 2400);
+        toastTimer = setTimeout(() => toastEl.classList.remove('is-visible'), 2400);
     }
 
     async function copyText(value) {
@@ -494,7 +492,7 @@
         });
     });
 
-    /* ----- 11d. Certification flip cards ----- */
+    /* 11d. Certification flip cards (cross-fade; works everywhere) */
     (function certFlips() {
         document.querySelectorAll('[data-flip]').forEach(card => {
             function toggle() {
@@ -517,35 +515,49 @@
     })();
 
     /* ---------------------------------------------------------
-       12. TIER 3 — THEME TOGGLE
+       12. TIER 3 — THEME TOGGLE (hardened)
        --------------------------------------------------------- */
     (function themeToggle() {
         const btn = document.getElementById('themeToggle');
         if (!btn) return;
 
+        function getStoredTheme() {
+            try { return localStorage.getItem('theme'); } catch (e) { return null; }
+        }
+        function setStoredTheme(value) {
+            try { localStorage.setItem('theme', value); } catch (e) {}
+        }
+        function currentTheme() {
+            return document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+        }
+        function applyTheme(theme) {
+            if (theme === 'light') {
+                document.documentElement.setAttribute('data-theme', 'light');
+            } else {
+                document.documentElement.removeAttribute('data-theme');
+            }
+        }
         function sync() {
-            const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+            const isLight = currentTheme() === 'light';
             btn.setAttribute('aria-pressed', String(isLight));
             btn.setAttribute('aria-label', isLight ? 'Switch to dark theme' : 'Switch to light theme');
         }
+
         sync();
 
-        btn.addEventListener('click', () => {
-            const isLight = document.documentElement.getAttribute('data-theme') === 'light';
-            const next = isLight ? 'dark' : 'light';
+        btn.addEventListener('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
 
-            if (next === 'dark') {
-                document.documentElement.removeAttribute('data-theme');
-            } else {
-                document.documentElement.setAttribute('data-theme', 'light');
-            }
-
-            try { localStorage.setItem('theme', next); } catch (e) {}
+            const next = currentTheme() === 'light' ? 'dark' : 'light';
+            applyTheme(next);
+            setStoredTheme(next);
             sync();
 
-            // Refresh ScrollTrigger so layout measurements stay accurate
-            if (hasGsap && ScrollTrigger.refresh) {
-                requestAnimationFrame(() => ScrollTrigger.refresh());
+            if (hasGsap && ScrollTrigger && typeof ScrollTrigger.refresh === 'function') {
+                requestAnimationFrame(function () {
+                    try { ScrollTrigger.refresh(); } catch (err) {}
+                });
             }
         });
     })();
@@ -568,7 +580,6 @@
             try {
                 el.textContent = formatter.format(new Date());
             } catch (e) {
-                // Fallback if Intl / timezone unsupported
                 const d = new Date();
                 el.textContent =
                     String(d.getHours()).padStart(2, '0') + ':' +
@@ -577,12 +588,7 @@
         }
 
         update();
-        // Update every 30s (so minute boundary drift is at most 30s)
-        setInterval(() => {
-            if (!document.hidden) update();
-        }, 30000);
-
-        // Refresh immediately when tab returns to foreground
+        setInterval(() => { if (!document.hidden) update(); }, 30000);
         document.addEventListener('visibilitychange', () => {
             if (!document.hidden) update();
         });
