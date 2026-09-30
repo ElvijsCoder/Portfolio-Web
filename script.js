@@ -1,13 +1,41 @@
 /* =========================================================
    Elvijs Strads — Portfolio
-   Vanilla JS. No dependencies.
+   GSAP + Lenis + node canvas + counters + role rotator
    ========================================================= */
 (function () {
     'use strict';
 
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const finePointer  = window.matchMedia('(pointer: fine)').matches;
+    const isMobile     = window.matchMedia('(max-width: 768px)').matches;
 
-    // ===== NAV / PROGRESS / SCROLL =====
+    /* ---------------------------------------------------------
+       1. LENIS SMOOTH SCROLL
+       --------------------------------------------------------- */
+    let lenis = null;
+    if (typeof Lenis !== 'undefined' && !reduceMotion) {
+        lenis = new Lenis({
+            duration: 1.15,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            smoothWheel: true,
+            wheelMultiplier: 0.9,
+        });
+        function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+        requestAnimationFrame(raf);
+    }
+
+    /* ---------------------------------------------------------
+       2. GSAP SETUP
+       --------------------------------------------------------- */
+    const hasGsap = typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined';
+    if (hasGsap) {
+        gsap.registerPlugin(ScrollTrigger);
+        if (lenis) lenis.on('scroll', ScrollTrigger.update);
+    }
+
+    /* ---------------------------------------------------------
+       3. NAV / PROGRESS / SCROLL
+       --------------------------------------------------------- */
     const navbar       = document.getElementById('navbar');
     const mobileToggle = document.getElementById('mobileToggle');
     const navLinks     = document.getElementById('navLinks');
@@ -21,20 +49,21 @@
         requestAnimationFrame(() => {
             const docHeight = document.documentElement.scrollHeight - window.innerHeight;
             const p = docHeight > 0 ? window.scrollY / docHeight : 0;
-            progressBar.style.transform = 'scaleX(' + p + ')';
-            navbar.classList.toggle('scrolled', window.scrollY > 50);
+            if (progressBar) progressBar.style.transform = 'scaleX(' + p + ')';
+            if (navbar) navbar.classList.toggle('scrolled', window.scrollY > 50);
             ticking = false;
         });
     }
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
 
-    // ===== MOBILE MENU =====
+    /* ---------------------------------------------------------
+       4. MOBILE MENU
+       --------------------------------------------------------- */
     function setMenu(open) {
         navLinks.classList.toggle('active', open);
         mobileToggle.setAttribute('aria-expanded', String(open));
         mobileToggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
-        // Trap focus inside the menu: make the rest of the page inert
         if (mainEl) mainEl.inert = open;
     }
 
@@ -42,11 +71,9 @@
         e.stopPropagation();
         setMenu(!navLinks.classList.contains('active'));
     });
-
     document.addEventListener('click', (e) => {
         if (!navbar.contains(e.target)) setMenu(false);
     });
-
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && navLinks.classList.contains('active')) {
             setMenu(false);
@@ -54,7 +81,9 @@
         }
     });
 
-    // ===== SMOOTH SCROLL =====
+    /* ---------------------------------------------------------
+       5. SMOOTH ANCHOR SCROLL (Lenis-aware)
+       --------------------------------------------------------- */
     document.querySelectorAll('a[href^="#"]').forEach(link => {
         link.addEventListener('click', (e) => {
             const href = link.getAttribute('href');
@@ -63,11 +92,18 @@
             if (!target) return;
             e.preventDefault();
             setMenu(false);
-            target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth' });
+
+            if (lenis) {
+                lenis.scrollTo(target, { offset: -70, duration: 1.2 });
+            } else {
+                target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth' });
+            }
         });
     });
 
-    // ===== SCROLL SPY =====
+    /* ---------------------------------------------------------
+       6. SCROLL SPY
+       --------------------------------------------------------- */
     const sections   = document.querySelectorAll('main section[id]');
     const navAnchors = document.querySelectorAll('.nav-links a');
     let currentId = '';
@@ -76,42 +112,287 @@
         entries.forEach(entry => {
             if (!entry.isIntersecting) return;
             const id = entry.target.id;
-            if (id === currentId) return; // avoid spamming replaceState
+            if (id === currentId) return;
             currentId = id;
-
             navAnchors.forEach(a => {
                 const active = a.getAttribute('href') === '#' + id;
                 a.classList.toggle('active', active);
                 if (active) a.setAttribute('aria-current', 'true');
                 else a.removeAttribute('aria-current');
             });
-
             const newHash = id === 'hero' ? window.location.pathname : '#' + id;
             history.replaceState(null, '', newHash);
         });
     }, { threshold: 0.4 });
-
     sections.forEach(s => spy.observe(s));
 
-    // ===== SCROLL REVEAL =====
-    const items = document.querySelectorAll('.reveal');
-    let revealObserver = null;
+    /* ---------------------------------------------------------
+       7. SCROLL REVEAL (GSAP enhanced)
+       --------------------------------------------------------- */
+    const revealEls = document.querySelectorAll('.reveal');
 
-    if (reduceMotion) {
-        items.forEach(el => el.classList.add('visible'));
-    } else {
-        revealObserver = new IntersectionObserver((entries, obs) => {
-            entries.forEach(entry => {
-                if (!entry.isIntersecting) return;
-                entry.target.classList.add('visible');
-                obs.unobserve(entry.target);
+    if (hasGsap && !reduceMotion) {
+        revealEls.forEach(el => {
+            gsap.fromTo(el,
+                { opacity: 0, y: 40 },
+                {
+                    opacity: 1,
+                    y: 0,
+                    duration: 1.1,
+                    ease: 'power3.out',
+                    scrollTrigger: {
+                        trigger: el,
+                        start: 'top 88%',
+                        toggleActions: 'play none none none',
+                    }
+                }
+            );
+        });
+
+        document.querySelectorAll('.section-header').forEach(header => {
+            ScrollTrigger.create({
+                trigger: header,
+                start: 'top 82%',
+                once: true,
+                onEnter: () => header.classList.add('is-visible'),
             });
-        }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
-
-        items.forEach(el => revealObserver.observe(el));
+        });
+    } else {
+        revealEls.forEach(el => el.classList.add('visible'));
+        document.querySelectorAll('.section-header').forEach(h => h.classList.add('is-visible'));
     }
 
-    // ===== GITHUB FETCH (cached to survive rate limits) =====
+    /* ---------------------------------------------------------
+       8. STAT COUNTERS
+       --------------------------------------------------------- */
+    function formatFinal(format, from, to) {
+        if (format === 'arrow')   return from + '→' + to;
+        if (format === 'range')   return from + '-' + to + 'h';
+        if (format === 'percent') return '~' + to + '%';
+        return String(to);
+    }
+
+    function animateMetric(el) {
+        if (el.dataset.animated === 'true') return;
+        el.dataset.animated = 'true';
+
+        const from   = parseInt(el.dataset.from || '0', 10);
+        const to     = parseInt(el.dataset.to   || '0', 10);
+        const format = el.dataset.format || '';
+
+        if (reduceMotion) {
+            el.textContent = formatFinal(format, from, to);
+            return;
+        }
+
+        el.classList.add('is-counting');
+        const duration = 1400;
+        const t0 = performance.now();
+
+        function frame(now) {
+            const p = Math.min((now - t0) / duration, 1);
+            const ease = 1 - Math.pow(1 - p, 3);
+            const current = Math.round(to * ease);
+
+            if (format === 'arrow') {
+                el.textContent = from + '→' + current;
+            } else if (format === 'range') {
+                el.textContent = from + '-' + current + 'h';
+            } else if (format === 'percent') {
+                el.textContent = '~' + current + '%';
+            } else {
+                el.textContent = String(current);
+            }
+
+            if (p < 1) {
+                requestAnimationFrame(frame);
+            } else {
+                el.textContent = formatFinal(format, from, to);
+                el.classList.remove('is-counting');
+                el.classList.add('is-complete');
+            }
+        }
+        requestAnimationFrame(frame);
+    }
+
+    const metrics = document.querySelectorAll('[data-metric]');
+    if (metrics.length) {
+        const mObserver = new IntersectionObserver((entries, obs) => {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) return;
+                animateMetric(entry.target);
+                obs.unobserve(entry.target);
+            });
+        }, { threshold: 0.55 });
+        metrics.forEach(m => mObserver.observe(m));
+    }
+
+    /* ---------------------------------------------------------
+       9. HERO ROLE ROTATOR
+       --------------------------------------------------------- */
+    (function roleRotator() {
+        const el = document.getElementById('heroRole');
+        if (!el || reduceMotion) return;
+
+        let roles;
+        try { roles = JSON.parse(el.dataset.roles || '[]'); } catch (e) { return; }
+        if (roles.length < 2) return;
+
+        let i = 0;
+        setInterval(() => {
+            if (document.hidden) return;
+            i = (i + 1) % roles.length;
+            el.classList.add('is-swapping');
+            setTimeout(() => {
+                el.textContent = roles[i];
+                el.classList.remove('is-swapping');
+            }, 550);
+        }, 4200);
+    })();
+
+    /* ---------------------------------------------------------
+       10. NODE NETWORK (hero canvas)
+       --------------------------------------------------------- */
+    (function nodeNetwork() {
+        const canvas = document.getElementById('heroCanvas');
+        if (!canvas || reduceMotion || isMobile) return;
+
+        const ctx = canvas.getContext('2d', { alpha: true });
+        let w = 0, h = 0, dpr = 1;
+        let nodes = [];
+        let raf = null;
+        let visible = true;
+        let pointer = { x: -9999, y: -9999 };
+
+        const LINK_DIST = 150;
+        const REPEL_DIST = 110;
+        const nodeCount = () => Math.min(52, Math.max(20, Math.floor(window.innerWidth / 30)));
+
+        function getAccent() {
+            return getComputedStyle(document.documentElement)
+                .getPropertyValue('--accent-cyan').trim() || '#00d4ff';
+        }
+
+        function resize() {
+            const r = canvas.getBoundingClientRect();
+            dpr = Math.min(window.devicePixelRatio || 1, 2);
+            w = r.width;
+            h = r.height;
+            canvas.width  = Math.floor(w * dpr);
+            canvas.height = Math.floor(h * dpr);
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            build();
+        }
+
+        function build() {
+            const n = nodeCount();
+            nodes = Array.from({ length: n }, () => ({
+                x: Math.random() * w,
+                y: Math.random() * h,
+                vx: (Math.random() - 0.5) * 0.22,
+                vy: (Math.random() - 0.5) * 0.22,
+                r: Math.random() * 1.4 + 0.9,
+                pulse: 0,
+            }));
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, w, h);
+            const col = getAccent();
+
+            for (let i = 0; i < nodes.length; i++) {
+                const p = nodes[i];
+
+                if (finePointer && pointer.x > -100) {
+                    const dx = p.x - pointer.x;
+                    const dy = p.y - pointer.y;
+                    const d = Math.hypot(dx, dy);
+                    if (d < REPEL_DIST && d > 0.01) {
+                        const f = (1 - d / REPEL_DIST) * 0.6;
+                        p.x += (dx / d) * f;
+                        p.y += (dy / d) * f;
+                    }
+                }
+
+                p.x += p.vx;
+                p.y += p.vy;
+
+                if (p.x < 0 || p.x > w) p.vx *= -1;
+                if (p.y < 0 || p.y > h) p.vy *= -1;
+
+                if (p.pulse > 0) p.pulse *= 0.94;
+
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.r + p.pulse * 1.5, 0, Math.PI * 2);
+                ctx.fillStyle = col;
+                ctx.globalAlpha = 0.55 + p.pulse * 0.4;
+                ctx.fill();
+            }
+
+            for (let i = 0; i < nodes.length; i++) {
+                const p = nodes[i];
+                for (let j = i + 1; j < nodes.length; j++) {
+                    const q = nodes[j];
+                    const dx = p.x - q.x;
+                    const dy = p.y - q.y;
+                    const d = Math.hypot(dx, dy);
+                    if (d < LINK_DIST) {
+                        const a = (1 - d / LINK_DIST) * 0.22;
+                        ctx.beginPath();
+                        ctx.moveTo(p.x, p.y);
+                        ctx.lineTo(q.x, q.y);
+                        ctx.globalAlpha = a;
+                        ctx.strokeStyle = col;
+                        ctx.lineWidth = 1;
+                        ctx.stroke();
+                        if (d < LINK_DIST * 0.35) {
+                            p.pulse = Math.max(p.pulse, 1 - d / (LINK_DIST * 0.35));
+                            q.pulse = Math.max(q.pulse, 1 - d / (LINK_DIST * 0.35));
+                        }
+                    }
+                }
+            }
+            ctx.globalAlpha = 1;
+
+            if (visible) raf = requestAnimationFrame(draw);
+        }
+
+        function start() { if (!raf) raf = requestAnimationFrame(draw); }
+        function stop()  { if (raf) { cancelAnimationFrame(raf); raf = null; } }
+
+        new IntersectionObserver(([entry]) => {
+            visible = entry.isIntersecting;
+            visible ? start() : stop();
+        }, { threshold: 0 }).observe(canvas);
+
+        document.addEventListener('visibilitychange', () => {
+            document.hidden ? stop() : (visible && start());
+        });
+
+        if (finePointer) {
+            window.addEventListener('pointermove', (e) => {
+                const r = canvas.getBoundingClientRect();
+                pointer.x = e.clientX - r.left;
+                pointer.y = e.clientY - r.top;
+            }, { passive: true });
+            window.addEventListener('pointerleave', () => {
+                pointer.x = -9999; pointer.y = -9999;
+            });
+        }
+
+        let rt;
+        window.addEventListener('resize', () => {
+            clearTimeout(rt);
+            rt = setTimeout(resize, 180);
+        }, { passive: true });
+
+        resize();
+        start();
+    })();
+
+    /* ---------------------------------------------------------
+       11. GITHUB FETCH
+       --------------------------------------------------------- */
     function sanitize(str) {
         if (!str) return '';
         return String(str)
@@ -172,7 +453,7 @@
                                 '<a href="' + url + '" target="_blank" rel="noopener noreferrer">' + name + '</a>' +
                             '</h3>' +
                             '<div class="project-stars" aria-label="' + stars + ' stars">' +
-                                '<svg width="14" height="14" viewBox="0 0 24 24" fill="#ffd700" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>' +
+                                '<svg width="14" height="14" viewBox="0 0 24 24" fill="#d4a853" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>' +
                                 stars +
                             '</div>' +
                         '</div>' +
@@ -188,8 +469,13 @@
             }).join('');
 
             const newCards = grid.querySelectorAll('.reveal');
-            if (revealObserver) {
-                newCards.forEach(el => revealObserver.observe(el));
+            if (hasGsap && !reduceMotion) {
+                newCards.forEach((el, i) => {
+                    gsap.fromTo(el,
+                        { opacity: 0, y: 30 },
+                        { opacity: 1, y: 0, duration: 0.8, delay: i * 0.06, ease: 'power3.out' }
+                    );
+                });
             } else {
                 newCards.forEach(el => el.classList.add('visible'));
             }
@@ -201,4 +487,5 @@
     }
 
     fetchProjects();
+
 })();
