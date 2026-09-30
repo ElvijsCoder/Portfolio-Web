@@ -9,7 +9,7 @@
     <link rel="canonical" href="https://strads.id.lv/">
 
     <meta name="color-scheme" content="dark">
-    <meta name="theme-color" content="#0c0c10">
+    <meta name="theme-color" content="#0a0a0f">
 
     <!-- Open Graph / social previews -->
     <meta property="og:type" content="website">
@@ -27,12 +27,13 @@
     <meta name="twitter:image" content="https://strads.id.lv/og-image.jpg">
 
     <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230c0c10'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='central' text-anchor='middle' font-family='monospace' font-weight='700' font-size='13' fill='%2300d4ff'%3EES%3C/text%3E%3C/svg%3E">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230a0a0f'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='central' text-anchor='middle' font-family='monospace' font-weight='700' font-size='13' fill='%2300d4ff'%3EES%3C/text%3E%3C/svg%3E">
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
     <!-- Fonts: trimmed weights, async-loaded, non-blocking -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://api.github.com">
     <link rel="preload" as="style"
           href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
     <link rel="stylesheet"
@@ -45,6 +46,14 @@
 
     <!-- Styles -->
     <link rel="stylesheet" href="styles.css">
+    <noscript>
+        <style>
+            .reveal { opacity: 1 !important; }
+            .section-header .section-number,
+            .section-header .section-title,
+            .section-header .section-divider { opacity: 1 !important; transform: none !important; }
+        </style>
+    </noscript>
 
     <!-- Structured data -->
     <script type="application/ld+json">
@@ -91,9 +100,9 @@
             <canvas class="hero-canvas" id="heroCanvas" aria-hidden="true"></canvas>
             <div class="hero-layout">
                 <div class="hero-left">
-                    <div class="hero-label">Portfolio / 2025</div>
+                    <div class="hero-label">Portfolio / 2026</div>
                     <h1 class="hero-name">Elvijs Strads</h1>
-                    < <p class="hero-title">
+                    <p class="hero-title">
                         <span class="accent" id="heroRole" data-roles='["Innovation &amp; Process Manager","Workflow Architect","Automation Strategist"]'>Innovation &amp; Process Manager</span> — turning operational complexity into scalable, AI-driven systems.
                     </p>
                     <p class="hero-summary">
@@ -167,20 +176,6 @@
                     </p>
                     <div class="metrics-grid">
                         <div class="metric-card">
-                            <div class="metric-value">56→34</div>
-                            <div class="metric-label">Workflow steps reduced</div>
-                        </div>
-                        <div class="metric-card">
-                            <div class="metric-value">30-50h</div>
-                            <div class="metric-label">Monthly hours saved via automation</div>
-                        </div>
-                        <div class="metric-card">
-                            <div class="metric-value">~20%</div>
-                            <div class="metric-label">Cost reduction delivered</div>
-                        </div>
-                    </div>
-                                        <div class="metrics-grid">
-                        <div class="metric-card">
                             <div class="metric-value" data-metric data-from="56" data-to="34" data-format="arrow">56→34</div>
                             <div class="metric-label">Workflow steps reduced</div>
                         </div>
@@ -193,6 +188,18 @@
                             <div class="metric-label">Cost reduction delivered</div>
                         </div>
                     </div>
+                    <div class="skills-section">
+                        <div class="skills-title">Technical Skills</div>
+                        <div class="skills-group">
+                            <div class="skills-group-label">Data &amp; BI</div>
+                            <div class="skills-cloud">
+                                <span class="skill-pill">Python</span>
+                                <span class="skill-pill">SQL</span>
+                                <span class="skill-pill">Power BI</span>
+                                <span class="skill-pill">Pandas</span>
+                                <span class="skill-pill">Data Modeling</span>
+                            </div>
+                        </div>
                         <div class="skills-group">
                             <div class="skills-group-label">Automation &amp; AI</div>
                             <div class="skills-cloud">
@@ -411,6 +418,5 @@
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
     <script src="script.js" defer></script>
-</body>
 </body>
 </html>
