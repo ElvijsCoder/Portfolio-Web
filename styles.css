@@ -28,7 +28,6 @@
     --font-mono: 'JetBrains Mono', monospace;
 }
 
-/* ===== LIGHT THEME ===== */
 [data-theme="light"] {
     --bg-primary: #f4f1ec;
     --bg-primary-rgb: 244, 241, 236;
@@ -496,7 +495,7 @@ section {
     50% { opacity: 1; transform: scaleY(1); }
 }
 
-/* ===== SECTION HEADERS (padding trimmed 8rem → 6rem) ===== */
+/* ===== SECTION HEADERS ===== */
 .section-header {
     margin-bottom: 3.5rem;
     padding-top: 6rem;
@@ -526,7 +525,7 @@ section {
     opacity: 0.6;
 }
 
-/* ===== ABOUT (photo removed, status panel added) ===== */
+/* ===== ABOUT ===== */
 .about-wrapper {
     display: grid;
     grid-template-columns: minmax(0, 1fr) 280px;
@@ -638,7 +637,7 @@ section {
     opacity: 0.7;
 }
 
-/* ===== STATUS PANEL (replaces About photo) ===== */
+/* ===== STATUS PANEL ===== */
 .status-panel {
     position: relative;
     background: var(--bg-card);
@@ -720,9 +719,7 @@ section {
     letter-spacing: 0.5px;
 }
 
-.status-val--live {
-    color: #22c55e;
-}
+.status-val--live { color: #22c55e; }
 
 .status-foot {
     margin-top: 1.25rem;
@@ -747,7 +744,7 @@ section {
     line-height: 1.5;
 }
 
-/* ===== AVAILABILITY (footer) ===== */
+/* ===== AVAILABILITY ===== */
 .availability {
     display: inline-flex;
     align-items: center;
@@ -1010,7 +1007,7 @@ section {
     text-decoration: none;
 }
 
-/* ===== CERTIFICATIONS ===== */
+/* ===== CERTIFICATIONS (cross-fade, no 3D) ===== */
 .certs-grid {
     display: flex;
     flex-direction: column;
@@ -1018,43 +1015,54 @@ section {
 }
 
 .cert-flip {
-    perspective: 2000px;
     cursor: pointer;
     outline: none;
     border-radius: 12px;
     position: relative;
 }
 
-.cert-flip-inner {
-    position: relative;
-    transition: transform 0.9s var(--ease-cinematic);
-    transform-style: preserve-3d;
-    will-change: transform;
-}
-
-.cert-flip[aria-pressed="true"] .cert-flip-inner {
-    transform: rotateY(180deg);
-}
+.cert-flip-inner { position: relative; }
 
 .cert-flip-face {
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
     border-radius: 12px;
+    transition: opacity 0.5s var(--ease-cinematic),
+                transform 0.5s var(--ease-cinematic);
 }
 
 .cert-flip-front {
     position: relative;
     z-index: 2;
+    opacity: 1;
+    transform: scale(1);
+}
+
+.cert-flip[aria-pressed="true"] .cert-flip-front {
+    opacity: 0;
+    transform: scale(1.02);
+    pointer-events: none;
 }
 
 .cert-flip-back {
     position: absolute;
     inset: 0;
-    transform: rotateY(180deg);
     z-index: 1;
     display: flex;
     align-items: center;
     justify-content: center;
+    opacity: 0;
+    transform: scale(0.97);
+    pointer-events: none;
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    padding: 1.8rem;
+}
+
+.cert-flip[aria-pressed="true"] .cert-flip-back {
+    opacity: 1;
+    transform: scale(1);
+    pointer-events: auto;
+    border-color: var(--border-glow);
 }
 
 .cert-back-inner {
@@ -1065,13 +1073,17 @@ section {
     gap: 1rem;
     text-align: center;
     padding: 1rem;
+    width: 100%;
+    max-width: 100%;
 }
 
 .cert-back-inner h3 {
     font-family: var(--font-display);
     font-size: 1.2rem;
     font-weight: 600;
-    max-width: 30ch;
+    max-width: 34ch;
+    margin: 0 auto;
+    text-wrap: balance;
 }
 
 .cert-back-issuer {
@@ -1284,7 +1296,6 @@ footer {
     font-family: var(--font-mono);
     font-size: 0.75rem;
     color: var(--text-muted);
-    /* Contrast fix: opacity removed */
 }
 
 /* ===== REVEAL ===== */
@@ -1383,9 +1394,7 @@ footer {
     transition: opacity 0.5s var(--ease-cinematic);
 }
 
-[data-theme="light"] .aurora {
-    opacity: 0.55;
-}
+[data-theme="light"] .aurora { opacity: 0.55; }
 
 @keyframes aurora-drift {
     0%   { transform: translate3d(0, 0, 0) scale(1); }
@@ -1552,8 +1561,7 @@ html.lenis body { height: auto; }
         transform: none;
         filter: none;
     }
-    .cert-flip-inner { transition: none; }
-    .cert-flip[aria-pressed="true"] .cert-flip-inner { transform: none; }
-    .cert-flip[aria-pressed="true"] .cert-flip-front { display: none; }
-    .cert-flip[aria-pressed="true"] .cert-flip-back { transform: none; }
+    .cert-flip-face { transition: none; }
+    .cert-flip[aria-pressed="true"] .cert-flip-front { opacity: 0; }
+    .cert-flip[aria-pressed="true"] .cert-flip-back { opacity: 1; transform: none; }
 }
