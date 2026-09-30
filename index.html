@@ -3,24 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Elvijs Strads — Innovation & Process Manager</title>
-    <meta name="description" content="Elvijs Strads — Innovation & Process Manager specializing in AI implementation, workflow architecture, and operational automation. Remote-native, built to plug into any team.">
+
+    <title>Elvijs Strads — Innovation &amp; Process Manager</title>
+    <meta name="description" content="Innovation & Process Manager specializing in AI implementation, workflow architecture, and operational automation. Based in Latvia, remote-native.">
+    <link rel="canonical" href="https://strads.id.lv/">
+
+    <meta name="color-scheme" content="dark">
+    <meta name="theme-color" content="#0c0c10">
+
+    <!-- Open Graph / social previews -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://strads.id.lv/">
     <meta property="og:title" content="Elvijs Strads — Innovation & Process Manager">
     <meta property="og:description" content="Remote-native process & AI specialist. Turning operational complexity into scalable, AI-driven systems.">
-    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://strads.id.lv/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Elvijs Strads — Innovation & Process Manager">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Elvijs Strads — Innovation & Process Manager">
+    <meta name="twitter:description" content="Remote-native process & AI specialist. Turning operational complexity into scalable, AI-driven systems.">
+    <meta name="twitter:image" content="https://strads.id.lv/og-image.jpg">
+
+    <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230c0c10'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='central' text-anchor='middle' font-family='monospace' font-weight='700' font-size='13' fill='%2300d4ff'%3EES%3C/text%3E%3C/svg%3E">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+    <!-- Fonts: trimmed weights, async-loaded, non-blocking -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-    <!-- NOTE: removed <base target="_blank"> — it was breaking internal anchor nav links -->
+    <link rel="preload" as="style"
+          href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+          media="print" onload="this.media='all'">
+    <noscript>
+        <link rel="stylesheet"
+              href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+    </noscript>
+
+    <!-- Structured data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Elvijs Strads",
+      "url": "https://strads.id.lv/",
+      "jobTitle": "Innovation & Process Manager",
+      "address": { "@type": "PostalAddress", "addressCountry": "LV" },
+      "sameAs": [
+        "https://github.com/ElvijsCoder",
+        "https://www.linkedin.com/in/elvijsstrads"
+      ]
+    }
+    </script>
+
     <style>
         :root {
             --bg-primary: #0c0c10;
             --bg-secondary: #111118;
             --bg-card: rgba(255,255,255,0.03);
             --text-primary: #f0f0f5;
-            --text-secondary: #8a8a9a;
-            --text-muted: #5a5a6a;
+            --text-secondary: #a8a8b8;
+            --text-muted: #8a8a9a;
             --accent-cyan: #00d4ff;
             --accent-purple: #a855f7;
             --accent-gradient: linear-gradient(135deg, #00d4ff, #a855f7);
@@ -64,11 +110,12 @@
             inset: 0;
             z-index: 0;
             pointer-events: none;
-            background-image: 
+            background-image:
                 linear-gradient(rgba(0,212,255,0.02) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(0,212,255,0.02) 1px, transparent 1px);
             background-size: 60px 60px;
             mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
+            -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
         }
 
         /* ===== NAVIGATION ===== */
@@ -88,6 +135,7 @@
         nav.scrolled {
             background: rgba(12,12,16,0.85);
             backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border-subtle);
         }
 
@@ -150,18 +198,25 @@
             color: var(--text-primary);
             font-size: 1.5rem;
             cursor: pointer;
+            padding: 0.4rem 0.6rem;
+            line-height: 1;
+            transition: transform 0.3s ease;
         }
 
-        /* ===== PROGRESS BAR ===== */
+        .mobile-toggle[aria-expanded="true"] { transform: rotate(90deg); }
+
+        /* ===== PROGRESS BAR (GPU-friendly scaleX) ===== */
         .progress-bar {
             position: fixed;
             top: 0;
             left: 0;
+            right: 0;
             height: 2px;
             background: var(--accent-gradient);
             z-index: 1001;
-            width: 0%;
-            transition: width 0.1s linear;
+            transform: scaleX(0);
+            transform-origin: left;
+            will-change: transform;
         }
 
         /* ===== SECTIONS ===== */
@@ -190,9 +245,7 @@
             align-items: center;
         }
 
-        .hero-left {
-            min-width: 0;
-        }
+        .hero-left { min-width: 0; }
 
         .hero-right {
             display: flex;
@@ -222,11 +275,12 @@
             pointer-events: none;
         }
 
+        .hero-photo-frame picture,
         .hero-photo-frame img {
+            display: block;
             width: 100%;
             height: 100%;
             object-fit: cover;
-            display: block;
         }
 
         .hero-side-skills {
@@ -331,89 +385,9 @@
             50% { box-shadow: 0 0 0 8px rgba(0,212,255,0.08); }
         }
 
+        /* ===== BUTTONS ===== */
         .btn-primary {
-            animation: heroPulse 3s ease-in-out 1.5s 3;
-        }
-
-        /* Experience timeline accent */
-        .exp-item {
-            position: relative;
-        }
-
-        .exp-item::before {
-            content: '';
-            position: absolute;
-            left: -2.5rem;
-            top: 0;
-            width: 2px;
-            height: 0;
-            background: var(--accent-gradient);
-            transition: height 0.4s ease;
-            opacity: 0;
-        }
-
-        .exp-item:hover::before {
-            height: 100%;
-            opacity: 1;
-        }
-
-        /* Skills grouping */
-        .skills-group {
-            margin-bottom: 1.2rem;
-        }
-
-        .skills-group-label {
-            font-family: var(--font-mono);
-            font-size: 0.62rem;
-            color: var(--accent-cyan);
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin-bottom: 0.5rem;
-            opacity: 0.7;
-        }
-
-        /* Cert icon — styled letter mark */
-        .cert-icon {
-            font-family: var(--font-mono);
-            font-size: 0.9rem;
-            font-weight: 600;
-            letter-spacing: -0.5px;
-        }
-
-        /* Availability signal */
-        .availability {
             display: inline-flex;
-            align-items: center;
-            gap: 0.6rem;
-            padding: 0.5rem 1.2rem;
-            background: rgba(0,212,255,0.04);
-            border: 1px solid rgba(0,212,255,0.12);
-            border-radius: 100px;
-            font-family: var(--font-mono);
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-            margin-bottom: 1.5rem;
-        }
-
-        .availability-dot {
-            width: 7px;
-            height: 7px;
-            border-radius: 50%;
-            background: #22c55e;
-            box-shadow: 0 0 8px rgba(34,197,94,0.6);
-            animation: pulse-dot 2s ease-in-out infinite;
-            flex-shrink: 0;
-        }
-
-        @keyframes pulse-dot {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.6; transform: scale(0.85); }
-        }
-
-        /* Metric counter */
-        .metric-value {
-            min-height: 1.6rem;
-        }
             align-items: center;
             gap: 0.6rem;
             padding: 0.9rem 2rem;
@@ -427,6 +401,7 @@
             text-decoration: none;
             transition: all 0.3s ease;
             cursor: pointer;
+            animation: heroPulse 3s ease-in-out 1.5s 3;
         }
 
         .btn-primary:hover {
@@ -514,7 +489,7 @@
             opacity: 0.6;
         }
 
-        /* ===== ABOUT - FLOATING PHOTO LAYOUT ===== */
+        /* ===== ABOUT ===== */
         .about-wrapper {
             display: flex;
             gap: 3rem;
@@ -536,11 +511,12 @@
             box-shadow: 0 10px 40px rgba(0,0,0,0.5);
         }
 
+        .photo-frame picture,
         .photo-frame img {
+            display: block;
             width: 100%;
             height: 100%;
             object-fit: cover;
-            display: block;
         }
 
         .about-content {
@@ -587,6 +563,7 @@
             color: var(--accent-cyan);
             line-height: 1;
             margin-bottom: 0.4rem;
+            min-height: 1.6rem;
         }
 
         .metric-label {
@@ -631,6 +608,47 @@
             background: rgba(0,212,255,0.05);
         }
 
+        .skills-group { margin-bottom: 1.2rem; }
+
+        .skills-group-label {
+            font-family: var(--font-mono);
+            font-size: 0.62rem;
+            color: var(--accent-cyan);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+            opacity: 0.7;
+        }
+
+        .availability {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.5rem 1.2rem;
+            background: rgba(0,212,255,0.04);
+            border: 1px solid rgba(0,212,255,0.12);
+            border-radius: 100px;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .availability-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #22c55e;
+            box-shadow: 0 0 8px rgba(34,197,94,0.6);
+            animation: pulse-dot 2s ease-in-out infinite;
+            flex-shrink: 0;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(0.85); }
+        }
+
         /* ===== EXPERIENCE ===== */
         .experience-list {
             display: flex;
@@ -639,12 +657,30 @@
         }
 
         .exp-item {
+            position: relative;
             display: grid;
             grid-template-columns: 200px 1fr;
             gap: 2rem;
             padding: 2.5rem 0;
             border-bottom: 1px solid var(--border-subtle);
             transition: all 0.3s ease;
+        }
+
+        .exp-item::before {
+            content: '';
+            position: absolute;
+            left: -2.5rem;
+            top: 0;
+            width: 2px;
+            height: 0;
+            background: var(--accent-gradient);
+            transition: height 0.4s ease;
+            opacity: 0;
+        }
+
+        .exp-item:hover::before {
+            height: 100%;
+            opacity: 1;
         }
 
         .exp-item:first-child {
@@ -870,7 +906,9 @@
             align-items: center;
             justify-content: center;
             font-family: var(--font-mono);
-            font-size: 1.2rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: -0.5px;
             color: var(--accent-cyan);
         }
 
@@ -1013,10 +1051,10 @@
             font-family: var(--font-mono);
             font-size: 0.75rem;
             color: var(--text-muted);
-            opacity: 0.5;
+            opacity: 0.7;
         }
 
-        /* ===== REVEAL ANIMATIONS ===== */
+        /* ===== REVEAL ===== */
         .reveal {
             opacity: 0;
             transform: translateY(30px);
@@ -1034,49 +1072,21 @@
 
         /* ===== RESPONSIVE ===== */
         @media (max-width: 900px) {
-            .hero-layout {
-                grid-template-columns: 1fr;
-            }
-
-            .hero-right {
-                display: none;
-            }
-
-            .hero-name {
-                white-space: normal;
-            }
-
+            .hero-layout { grid-template-columns: 1fr; }
+            .hero-right { display: none; }
+            .hero-name { white-space: normal; }
             .about-wrapper {
                 flex-direction: column;
                 align-items: center;
                 text-align: center;
             }
-
-            .about-photo {
-                width: 180px;
-            }
-
-            .metrics-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .projects-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .exp-item {
-                grid-template-columns: 1fr;
-                gap: 0.5rem;
-            }
-
-            .cert-card {
-                grid-template-columns: 1fr;
-                gap: 1rem;
-            }
-
-            .cert-meta {
-                text-align: left;
-            }
+            .about-photo { width: 180px; }
+            .metrics-grid { grid-template-columns: 1fr; }
+            .projects-grid { grid-template-columns: 1fr; }
+            .exp-item { grid-template-columns: 1fr; gap: 0.5rem; }
+            .exp-item::before { left: -0.75rem; }
+            .cert-card { grid-template-columns: 1fr; gap: 1rem; }
+            .cert-meta { text-align: left; }
         }
 
         @media (max-width: 768px) {
@@ -1092,342 +1102,381 @@
                 gap: 1rem;
                 border-bottom: 1px solid var(--border-subtle);
             }
+            .nav-links.active { display: flex; }
+            .mobile-toggle { display: block; }
+            section { padding: 0 1.5rem; }
+            .hero-cta { flex-direction: column; align-items: flex-start; }
+        }
 
-            .nav-links.active {
-                display: flex;
-            }
+        /* ===== ACCESSIBILITY ===== */
+        :focus-visible {
+            outline: 2px solid var(--accent-cyan);
+            outline-offset: 3px;
+            border-radius: 4px;
+        }
+        :focus:not(:focus-visible) { outline: none; }
 
-            .mobile-toggle {
-                display: block;
-            }
+        .skip-link {
+            position: absolute;
+            left: 1rem;
+            top: -100px;
+            z-index: 2000;
+            padding: 0.8rem 1.2rem;
+            background: var(--accent-cyan);
+            color: #04121a;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: top 0.2s ease;
+        }
+        .skip-link:focus { top: 1rem; }
 
-            section {
-                padding: 0 1.5rem;
+        /* ===== REDUCED MOTION ===== */
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            *, *::before, *::after {
+                animation-duration: 0.001ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.001ms !important;
             }
-
-            .hero-cta {
-                flex-direction: column;
-                align-items: flex-start;
-            }
+            .reveal { opacity: 1; transform: none; }
+            .btn-primary { animation: none; }
+            .scroll-line { animation: none; opacity: 0.5; }
+            .availability-dot { animation: none; }
         }
     </style>
 </head>
 <body>
-    <div class="progress-bar" id="progressBar"></div>
-    <div class="bg-noise"></div>
-    <div class="bg-grid"></div>
+    <a href="#main" class="skip-link">Skip to content</a>
 
-    <!-- Navigation -->
-    <nav id="navbar">
-        <div class="nav-logo"><span>ES</span> / Portfolio</div>
-        <ul class="nav-links" id="navLinks">
-            <li><a href="#about">About</a></li>
-            <li><a href="#experience">Experience</a></li>
-            <li><a href="#projects">Projects</a></li>
-            <li><a href="#certifications">Certificates</a></li>
-        </ul>
-        <button class="mobile-toggle" id="mobileToggle">☰</button>
-    </nav>
+    <div class="progress-bar" id="progressBar" aria-hidden="true"></div>
+    <div class="bg-noise" aria-hidden="true"></div>
+    <div class="bg-grid" aria-hidden="true"></div>
 
-    <!-- Hero -->
-    <section id="hero">
-        <div class="hero-layout">
-            <div class="hero-left">
-                <div class="hero-label">Portfolio / 2025</div>
-                <h1 class="hero-name">Elvijs Strads</h1>
-                <p class="hero-title">
-                    <span class="accent">Innovation & Process Manager</span> — turning operational complexity into scalable, AI-driven systems.
-                </p>
-                <p class="hero-summary">
-                    I find the processes no one has questioned in years — and rebuild them with automation and AI. Remote-native, and built to plug into any team, anywhere.
-                </p>
-                <div class="hero-cta">
-                    <a href="#projects" class="btn-primary">
-                        View Projects
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
-                    </a>
-                    <a href="https://github.com/ElvijsCoder" target="_blank" class="btn-secondary">
-                        GitHub
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-                    </a>
-                </div>
-            </div>
-            <div class="hero-right">
-                <div class="hero-photo-frame">
-                    <img src="profile.png" alt="Elvijs Strads" loading="lazy">
-                </div>
-                <div class="hero-side-skills">
-                    <div class="hero-side-skills-label">Technical Skills</div>
-                    <div class="hero-side-pills">
-                        <span class="hero-side-pill">Python</span>
-                        <span class="hero-side-pill">Power BI</span>
-                        <span class="hero-side-pill">SQL</span>
-                        <span class="hero-side-pill">Power Automate</span>
-                        <span class="hero-side-pill">AI Integration</span>
-                        <span class="hero-side-pill">Process Design</span>
-                        <span class="hero-side-pill">Data Modeling</span>
-                        <span class="hero-side-pill">Azure</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="scroll-hint">
-            <span>Scroll</span>
-            <div class="scroll-line"></div>
-        </div>
-    </section>
+    <header>
+        <nav id="navbar" aria-label="Primary">
+            <div class="nav-logo"><span>ES</span> / Portfolio</div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#about">About</a></li>
+                <li><a href="#experience">Experience</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#certifications">Certificates</a></li>
+            </ul>
+            <button class="mobile-toggle" id="mobileToggle" type="button"
+                    aria-label="Open menu" aria-expanded="false" aria-controls="navLinks">☰</button>
+        </nav>
+    </header>
 
-    <!-- About -->
-    <section id="about">
-        <div class="section-header reveal">
-            <div class="section-number">01</div>
-            <h2 class="section-title">About</h2>
-            <div class="section-divider"></div>
-        </div>
-        <div class="about-wrapper reveal">
-            <div class="about-photo">
-                <div class="photo-frame">
-                    <img src="profile.png" alt="Elvijs Strads" loading="lazy">
-                </div>
-            </div>
-            <div class="about-content">
-                <p class="about-text">
-                    At <strong>Tilde</strong>, I lead process transformation and AI integration across localization operations — redesigning workflows, eliminating manual effort, and building Power BI reporting systems that give <strong>15+ project managers</strong> and <strong>300+ linguists</strong> real visibility into their work.
-                </p>
-                <p class="about-text">
-                    That work sits on <strong>8 years of experience</strong> across B2B sales, workforce analytics, and operations management — roles that gave me an unusually grounded view of what data, automation, and AI actually change for the people using them.
-                </p>
-                <div class="metrics-grid">
-                    <div class="metric-card">
-                        <div class="metric-value">56→34</div>
-                        <div class="metric-label">Workflow steps reduced</div>
-                    </div>
-                    <div class="metric-card">
-                        <div class="metric-value">30-50h</div>
-                        <div class="metric-label">Monthly hours saved via automation</div>
-                    </div>
-                    <div class="metric-card">
-                        <div class="metric-value">~20%</div>
-                        <div class="metric-label">Cost reduction delivered</div>
+    <main id="main">
+
+        <!-- Hero -->
+        <section id="hero" aria-label="Introduction">
+            <div class="hero-layout">
+                <div class="hero-left">
+                    <div class="hero-label">Portfolio / 2025</div>
+                    <h1 class="hero-name">Elvijs Strads</h1>
+                    <p class="hero-title">
+                        <span class="accent">Innovation &amp; Process Manager</span> — turning operational complexity into scalable, AI-driven systems.
+                    </p>
+                    <p class="hero-summary">
+                        I find the processes no one has questioned in years — and rebuild them with automation and AI. Remote-native, and built to plug into any team, anywhere.
+                    </p>
+                    <div class="hero-cta">
+                        <a href="#projects" class="btn-primary">
+                            View Projects
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+                        </a>
+                        <a href="https://github.com/ElvijsCoder" target="_blank" rel="noopener noreferrer" class="btn-secondary">
+                            GitHub
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                        </a>
                     </div>
                 </div>
-                <div class="skills-section">
-                    <div class="skills-title">Technical Skills</div>
-                    <div class="skills-group">
-                        <div class="skills-group-label">Data & BI</div>
-                        <div class="skills-cloud">
-                            <span class="skill-pill">Python</span>
-                            <span class="skill-pill">SQL</span>
-                            <span class="skill-pill">Power BI</span>
-                            <span class="skill-pill">Pandas</span>
-                            <span class="skill-pill">Data Modeling</span>
-                        </div>
+                <div class="hero-right">
+                    <div class="hero-photo-frame">
+                        <picture>
+                            <source srcset="profile.avif" type="image/avif">
+                            <source srcset="profile.webp" type="image/webp">
+                            <img src="profile.jpg" alt="Portrait of Elvijs Strads" width="560" height="747"
+                                 fetchpriority="high" decoding="async">
+                        </picture>
                     </div>
-                    <div class="skills-group">
-                        <div class="skills-group-label">Automation & AI</div>
-                        <div class="skills-cloud">
-                            <span class="skill-pill">Power Automate</span>
-                            <span class="skill-pill">AI Solution Architecture</span>
-                            <span class="skill-pill">RAG</span>
-                            <span class="skill-pill">Machine Learning</span>
-                            <span class="skill-pill">Process Optimization</span>
-                        </div>
-                    </div>
-                    <div class="skills-group">
-                        <div class="skills-group-label">Infrastructure</div>
-                        <div class="skills-cloud">
-                            <span class="skill-pill">Azure</span>
-                            <span class="skill-pill">Docker</span>
-                            <span class="skill-pill">Flask</span>
-                            <span class="skill-pill">Git</span>
+                    <div class="hero-side-skills">
+                        <div class="hero-side-skills-label">Technical Skills</div>
+                        <div class="hero-side-pills">
+                            <span class="hero-side-pill">Python</span>
+                            <span class="hero-side-pill">Power BI</span>
+                            <span class="hero-side-pill">SQL</span>
+                            <span class="hero-side-pill">Power Automate</span>
+                            <span class="hero-side-pill">AI Integration</span>
+                            <span class="hero-side-pill">Process Design</span>
+                            <span class="hero-side-pill">Data Modeling</span>
+                            <span class="hero-side-pill">Azure</span>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+            <div class="scroll-hint" aria-hidden="true">
+                <span>Scroll</span>
+                <div class="scroll-line"></div>
+            </div>
+        </section>
 
-    <!-- Experience -->
-    <section id="experience">
-        <div class="section-header reveal">
-            <div class="section-number">02</div>
-            <h2 class="section-title">Experience</h2>
-            <div class="section-divider"></div>
-        </div>
-        <div class="experience-list">
-            <div class="exp-item reveal">
-                <div class="exp-date">Nov 2024 — Present<br>Latvia</div>
-                <div class="exp-content">
-                    <h3>Innovation & Process Manager</h3>
-                    <div class="exp-company">Tilde</div>
-                    <p class="exp-desc">
-                        Leading process optimization, automation, and AI integration within localization workflows. Redesigning inefficient processes, implementing AI-driven solutions, and building scalable systems that reduce manual work and improve operational output. Supporting 15+ project managers and 300+ linguists with data-driven decision making through custom Power BI dashboards.
+        <!-- About -->
+        <section id="about" aria-labelledby="about-heading">
+            <div class="section-header reveal">
+                <div class="section-number" aria-hidden="true">01</div>
+                <h2 class="section-title" id="about-heading">About</h2>
+                <div class="section-divider" aria-hidden="true"></div>
+            </div>
+            <div class="about-wrapper reveal">
+                <div class="about-photo">
+                    <div class="photo-frame">
+                        <picture>
+                            <source srcset="profile.avif" type="image/avif">
+                            <source srcset="profile.webp" type="image/webp">
+                            <img src="profile.jpg" alt="Elvijs Strads" width="440" height="587"
+                                 loading="lazy" decoding="async">
+                        </picture>
+                    </div>
+                </div>
+                <div class="about-content">
+                    <p class="about-text">
+                        At <strong>Tilde</strong>, I lead process transformation and AI integration across localization operations — redesigning workflows, eliminating manual effort, and building Power BI reporting systems that give <strong>15+ project managers</strong> and <strong>300+ linguists</strong> real visibility into their work.
                     </p>
-                    <div class="exp-highlights">
-                        <span class="exp-tag">Python</span>
-                        <span class="exp-tag">Power Automate</span>
-                        <span class="exp-tag">Power BI</span>
-                        <span class="exp-tag">AI Integration</span>
-                        <span class="exp-tag">Process Design</span>
+                    <p class="about-text">
+                        That work sits on <strong>8 years of experience</strong> across B2B sales, workforce analytics, and operations management — roles that gave me an unusually grounded view of what data, automation, and AI actually change for the people using them.
+                    </p>
+                    <div class="metrics-grid">
+                        <div class="metric-card">
+                            <div class="metric-value">56→34</div>
+                            <div class="metric-label">Workflow steps reduced</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value">30-50h</div>
+                            <div class="metric-label">Monthly hours saved via automation</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value">~20%</div>
+                            <div class="metric-label">Cost reduction delivered</div>
+                        </div>
+                    </div>
+                    <div class="skills-section">
+                        <div class="skills-title">Technical Skills</div>
+                        <div class="skills-group">
+                            <div class="skills-group-label">Data &amp; BI</div>
+                            <div class="skills-cloud">
+                                <span class="skill-pill">Python</span>
+                                <span class="skill-pill">SQL</span>
+                                <span class="skill-pill">Power BI</span>
+                                <span class="skill-pill">Pandas</span>
+                                <span class="skill-pill">Data Modeling</span>
+                            </div>
+                        </div>
+                        <div class="skills-group">
+                            <div class="skills-group-label">Automation &amp; AI</div>
+                            <div class="skills-cloud">
+                                <span class="skill-pill">Power Automate</span>
+                                <span class="skill-pill">AI Solution Architecture</span>
+                                <span class="skill-pill">RAG</span>
+                                <span class="skill-pill">Machine Learning</span>
+                                <span class="skill-pill">Process Optimization</span>
+                            </div>
+                        </div>
+                        <div class="skills-group">
+                            <div class="skills-group-label">Infrastructure</div>
+                            <div class="skills-cloud">
+                                <span class="skill-pill">Azure</span>
+                                <span class="skill-pill">Docker</span>
+                                <span class="skill-pill">Flask</span>
+                                <span class="skill-pill">Git</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="exp-item reveal">
-                <div class="exp-date">Mar 2023 — Jul 2024<br>Sheffield, UK</div>
-                <div class="exp-content">
-                    <h3>Management Information Analyst</h3>
-                    <div class="exp-company">Optima Health (OH&W)</div>
-                    <p class="exp-desc">
-                        Promoted from Real-Time Analyst. Generated weekly, daily, monthly, and yearly reports using Excel and SQL. Led a company-wide project to catalog reports and variables, paving the way for a consolidated Power BI database. Actively participated in training initiatives and continuous improvement across 30+ businesses.
-                    </p>
-                    <div class="exp-highlights">
-                        <span class="exp-tag">SQL</span>
-                        <span class="exp-tag">Excel</span>
-                        <span class="exp-tag">Power BI</span>
-                        <span class="exp-tag">Data Visualization</span>
-                    </div>
-                </div>
-            </div>
-            <div class="exp-item reveal">
-                <div class="exp-date">Jul 2022 — Mar 2023<br>Sheffield, UK</div>
-                <div class="exp-content">
-                    <h3>Real-Time Analyst</h3>
-                    <div class="exp-company">Optima Health (OH&W)</div>
-                    <p class="exp-desc">
-                        Optimized workflow for 100+ agents serving 30+ critical businesses in the health and well-being sector. Leveraged data visualization and analysis to identify bottlenecks and develop actionable insights. Increased agent productivity by 15% through scheduling adjustments, resulting in a 10% reduction in call handle times.
-                    </p>
-                    <div class="exp-highlights">
-                        <span class="exp-tag">SLA/KPI Monitoring</span>
-                        <span class="exp-tag">Workforce Management</span>
-                        <span class="exp-tag">Data Analysis</span>
-                    </div>
-                </div>
-            </div>
-            <div class="exp-item reveal">
-                <div class="exp-date">Nov 2020 — Jun 2022<br>Stockholm, Sweden</div>
-                <div class="exp-content">
-                    <h3>Sales & Account Manager</h3>
-                    <div class="exp-company">FLYTE</div>
-                    <p class="exp-desc">
-                        Managed global B2B client relationships across product launches, onboarding, and growth strategy. Working directly with commercial teams across multiple markets gave me an early, practical understanding of how operational decisions translate into revenue outcomes — a lens I've carried into every analytical and process role since.
-                    </p>
-                    <div class="exp-highlights">
-                        <span class="exp-tag">B2B Sales</span>
-                        <span class="exp-tag">Account Management</span>
-                        <span class="exp-tag">Strategic Planning</span>
-                    </div>
-                </div>
-            </div>
-            <div class="exp-item reveal">
-                <div class="exp-date">Aug 2019 — Apr 2020<br>Latvia</div>
-                <div class="exp-content">
-                    <h3>Organizational Effectiveness Manager</h3>
-                    <div class="exp-company">FINITERA</div>
-                    <p class="exp-desc">
-                        Deployed Lean methodology in an underperforming branch operation, contributing to a significant turnaround in profitability. Reduced wasteful agent workflows, launched a customer chatbot that improved satisfaction scores by 20%, and built the company's first structured NPS measurement system.
-                    </p>
-                    <div class="exp-highlights">
-                        <span class="exp-tag">Lean Methodology</span>
-                        <span class="exp-tag">Process Optimization</span>
-                        <span class="exp-tag">Chatbot Development</span>
-                        <span class="exp-tag">NPS Strategy</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Projects -->
-    <section id="projects">
-        <div class="section-header reveal">
-            <div class="section-number">03</div>
-            <h2 class="section-title">Projects</h2>
-            <div class="section-divider"></div>
-        </div>
-        <div class="projects-grid" id="projectsGrid">
-            <div class="projects-loading">Loading repositories from GitHub...</div>
-        </div>
-    </section>
-
-    <!-- Certifications -->
-    <section id="certifications">
-        <div class="section-header reveal">
-            <div class="section-number">04</div>
-            <h2 class="section-title">Certifications</h2>
-            <div class="section-divider"></div>
-        </div>
-        <div class="certs-grid">
-            <div class="cert-card reveal">
-                <div class="cert-icon">IBM</div>
-                <div class="cert-content">
-                    <h3>AI Engineering Professional Certificate</h3>
-                    <div class="cert-issuer">IBM</div>
-                    <p class="cert-desc">
-                        Comprehensive specialization covering machine learning, deep learning, neural networks, generative AI, and AI application development using Python and industry-standard frameworks. Includes hands-on projects with TensorFlow, PyTorch, and cloud deployment.
-                    </p>
-                    <div class="cert-skills">
-                        <span class="cert-skill">Machine Learning</span>
-                        <span class="cert-skill">Deep Learning</span>
-                        <span class="cert-skill">Neural Networks</span>
-                        <span class="cert-skill">Generative AI</span>
-                        <span class="cert-skill">Python</span>
-                        <span class="cert-skill">TensorFlow</span>
+        <!-- Experience -->
+        <section id="experience" aria-labelledby="experience-heading">
+            <div class="section-header reveal">
+                <div class="section-number" aria-hidden="true">02</div>
+                <h2 class="section-title" id="experience-heading">Experience</h2>
+                <div class="section-divider" aria-hidden="true"></div>
+            </div>
+            <div class="experience-list">
+                <div class="exp-item reveal">
+                    <div class="exp-date">Nov 2024 — Present<br>Latvia</div>
+                    <div class="exp-content">
+                        <h3>Innovation &amp; Process Manager</h3>
+                        <div class="exp-company">Tilde</div>
+                        <p class="exp-desc">
+                            Leading process optimization, automation, and AI integration within localization workflows. Redesigning inefficient processes, implementing AI-driven solutions, and building scalable systems that reduce manual work and improve operational output. Supporting 15+ project managers and 300+ linguists with data-driven decision making through custom Power BI dashboards.
+                        </p>
+                        <div class="exp-highlights">
+                            <span class="exp-tag">Python</span>
+                            <span class="exp-tag">Power Automate</span>
+                            <span class="exp-tag">Power BI</span>
+                            <span class="exp-tag">AI Integration</span>
+                            <span class="exp-tag">Process Design</span>
+                        </div>
                     </div>
-                    <span class="cert-link" style="opacity:0.35; cursor:default;">Verification link coming soon</span>
                 </div>
-                <div class="cert-meta">
-                    <span class="cert-status completed">COMPLETED</span>
-                    <div class="cert-date">2026</div>
-                </div>
-            </div>
-
-            <div class="cert-card reveal">
-                <div class="cert-icon">PY</div>
-                <div class="cert-content">
-                    <h3>Python Development Professional Certificate</h3>
-                    <div class="cert-issuer">Microsoft</div>
-                    <p class="cert-desc">
-                        6-course professional program covering Python fundamentals, data analysis with Pandas/Matplotlib, automation and scripting, web development with Flask, advanced programming with OOP and cloud computing, and project management with Agile/DevOps practices.
-                    </p>
-                    <div class="cert-skills">
-                        <span class="cert-skill">Python</span>
-                        <span class="cert-skill">Data Analysis</span>
-                        <span class="cert-skill">Flask</span>
-                        <span class="cert-skill">Automation</span>
-                        <span class="cert-skill">Azure</span>
-                        <span class="cert-skill">DevOps</span>
-                        <span class="cert-skill">Docker</span>
+                <div class="exp-item reveal">
+                    <div class="exp-date">Mar 2023 — Jul 2024<br>Sheffield, UK</div>
+                    <div class="exp-content">
+                        <h3>Management Information Analyst</h3>
+                        <div class="exp-company">Optima Health (OH&amp;W)</div>
+                        <p class="exp-desc">
+                            Promoted from Real-Time Analyst. Generated weekly, daily, monthly, and yearly reports using Excel and SQL. Led a company-wide project to catalog reports and variables, paving the way for a consolidated Power BI database. Actively participated in training initiatives and continuous improvement across 30+ businesses.
+                        </p>
+                        <div class="exp-highlights">
+                            <span class="exp-tag">SQL</span>
+                            <span class="exp-tag">Excel</span>
+                            <span class="exp-tag">Power BI</span>
+                            <span class="exp-tag">Data Visualization</span>
+                        </div>
                     </div>
-                    <a href="https://www.coursera.org/programs/nva-coursera-mtmcn/professional-certificates/microsoft-python-developer" target="_blank" class="cert-link">
-                        View Program →
-                    </a>
                 </div>
-                <div class="cert-meta">
-                    <span class="cert-status in-progress">IN PROGRESS</span>
-                    <div class="cert-date">Expected 2026</div>
+                <div class="exp-item reveal">
+                    <div class="exp-date">Jul 2022 — Mar 2023<br>Sheffield, UK</div>
+                    <div class="exp-content">
+                        <h3>Real-Time Analyst</h3>
+                        <div class="exp-company">Optima Health (OH&amp;W)</div>
+                        <p class="exp-desc">
+                            Optimized workflow for 100+ agents serving 30+ critical businesses in the health and well-being sector. Leveraged data visualization and analysis to identify bottlenecks and develop actionable insights. Increased agent productivity by 15% through scheduling adjustments, resulting in a 10% reduction in call handle times.
+                        </p>
+                        <div class="exp-highlights">
+                            <span class="exp-tag">SLA/KPI Monitoring</span>
+                            <span class="exp-tag">Workforce Management</span>
+                            <span class="exp-tag">Data Analysis</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="exp-item reveal">
+                    <div class="exp-date">Nov 2020 — Jun 2022<br>Stockholm, Sweden</div>
+                    <div class="exp-content">
+                        <h3>Sales &amp; Account Manager</h3>
+                        <div class="exp-company">FLYTE</div>
+                        <p class="exp-desc">
+                            Managed global B2B client relationships across product launches, onboarding, and growth strategy. Working directly with commercial teams across multiple markets gave me an early, practical understanding of how operational decisions translate into revenue outcomes — a lens I've carried into every analytical and process role since.
+                        </p>
+                        <div class="exp-highlights">
+                            <span class="exp-tag">B2B Sales</span>
+                            <span class="exp-tag">Account Management</span>
+                            <span class="exp-tag">Strategic Planning</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="exp-item reveal">
+                    <div class="exp-date">Aug 2019 — Apr 2020<br>Latvia</div>
+                    <div class="exp-content">
+                        <h3>Organizational Effectiveness Manager</h3>
+                        <div class="exp-company">FINITERA</div>
+                        <p class="exp-desc">
+                            Deployed Lean methodology in an underperforming branch operation, contributing to a significant turnaround in profitability. Reduced wasteful agent workflows, launched a customer chatbot that improved satisfaction scores by 20%, and built the company's first structured NPS measurement system.
+                        </p>
+                        <div class="exp-highlights">
+                            <span class="exp-tag">Lean Methodology</span>
+                            <span class="exp-tag">Process Optimization</span>
+                            <span class="exp-tag">Chatbot Development</span>
+                            <span class="exp-tag">NPS Strategy</span>
+                        </div>
+                    </div>
                 </div>
             </div>
+        </section>
 
-            <!-- Future cert hidden — uncomment to restore
-            <div class="cert-card reveal" style="opacity: 0.5;">
-                ...
+        <!-- Projects -->
+        <section id="projects" aria-labelledby="projects-heading">
+            <div class="section-header reveal">
+                <div class="section-number" aria-hidden="true">03</div>
+                <h2 class="section-title" id="projects-heading">Projects</h2>
+                <div class="section-divider" aria-hidden="true"></div>
             </div>
-            -->
-        </div>
-    </section>
+            <div class="projects-grid" id="projectsGrid">
+                <div class="projects-loading">Loading repositories from GitHub...</div>
+            </div>
+        </section>
+
+        <!-- Certifications -->
+        <section id="certifications" aria-labelledby="certifications-heading">
+            <div class="section-header reveal">
+                <div class="section-number" aria-hidden="true">04</div>
+                <h2 class="section-title" id="certifications-heading">Certifications</h2>
+                <div class="section-divider" aria-hidden="true"></div>
+            </div>
+            <div class="certs-grid">
+                <div class="cert-card reveal">
+                    <div class="cert-icon" aria-hidden="true">IBM</div>
+                    <div class="cert-content">
+                        <h3>AI Engineering Professional Certificate</h3>
+                        <div class="cert-issuer">IBM</div>
+                        <p class="cert-desc">
+                            Comprehensive specialization covering machine learning, deep learning, neural networks, generative AI, and AI application development using Python and industry-standard frameworks. Includes hands-on projects with TensorFlow, PyTorch, and cloud deployment.
+                        </p>
+                        <div class="cert-skills">
+                            <span class="cert-skill">Machine Learning</span>
+                            <span class="cert-skill">Deep Learning</span>
+                            <span class="cert-skill">Neural Networks</span>
+                            <span class="cert-skill">Generative AI</span>
+                            <span class="cert-skill">Python</span>
+                            <span class="cert-skill">TensorFlow</span>
+                        </div>
+                        <span class="cert-link" style="opacity:0.35; cursor:default;">Verification link coming soon</span>
+                    </div>
+                    <div class="cert-meta">
+                        <span class="cert-status completed">COMPLETED</span>
+                        <div class="cert-date">2026</div>
+                    </div>
+                </div>
+
+                <div class="cert-card reveal">
+                    <div class="cert-icon" aria-hidden="true">PY</div>
+                    <div class="cert-content">
+                        <h3>Python Development Professional Certificate</h3>
+                        <div class="cert-issuer">Microsoft</div>
+                        <p class="cert-desc">
+                            6-course professional program covering Python fundamentals, data analysis with Pandas/Matplotlib, automation and scripting, web development with Flask, advanced programming with OOP and cloud computing, and project management with Agile/DevOps practices.
+                        </p>
+                        <div class="cert-skills">
+                            <span class="cert-skill">Python</span>
+                            <span class="cert-skill">Data Analysis</span>
+                            <span class="cert-skill">Flask</span>
+                            <span class="cert-skill">Automation</span>
+                            <span class="cert-skill">Azure</span>
+                            <span class="cert-skill">DevOps</span>
+                            <span class="cert-skill">Docker</span>
+                        </div>
+                        <a href="https://www.coursera.org/programs/nva-coursera-mtmcn/professional-certificates/microsoft-python-developer"
+                           target="_blank" rel="noopener noreferrer" class="cert-link">
+                            View Program →
+                        </a>
+                    </div>
+                    <div class="cert-meta">
+                        <span class="cert-status in-progress">IN PROGRESS</span>
+                        <div class="cert-date">Expected 2026</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
 
     <!-- Footer -->
     <footer>
         <div class="footer-content">
             <div class="footer-name">Elvijs Strads</div>
             <div class="availability">
-                <span class="availability-dot"></span>
+                <span class="availability-dot" aria-hidden="true"></span>
                 Available for remote engagements
             </div>
             <p class="footer-tagline">Remote-native. Building the kind of systems that make people wonder why they ever did it manually.</p>
             <div class="footer-links">
-                <a href="https://github.com/ElvijsCoder" target="_blank">GitHub</a>
-                <a href="https://www.linkedin.com/in/elvijsstrads" target="_blank">LinkedIn</a>
+                <a href="https://github.com/ElvijsCoder" target="_blank" rel="noopener noreferrer">GitHub</a>
+                <a href="https://www.linkedin.com/in/elvijsstrads" target="_blank" rel="noopener noreferrer">LinkedIn</a>
                 <a href="mailto:stradselvijs@gmail.com">Email</a>
             </div>
             <p class="footer-copy">© 2026 — Built with intention. Continuously evolving.</p>
@@ -1435,116 +1484,145 @@
     </footer>
 
     <script>
-        // ===== NAVIGATION SETUP =====
-        const navbar = document.getElementById('navbar');
+    (function () {
+        'use strict';
+
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        // ===== NAV / PROGRESS / SCROLL =====
+        const navbar       = document.getElementById('navbar');
         const mobileToggle = document.getElementById('mobileToggle');
-        const navLinks = document.getElementById('navLinks');
-        const progressBar = document.getElementById('progressBar');
+        const navLinks     = document.getElementById('navLinks');
+        const progressBar  = document.getElementById('progressBar');
 
-        // ===== SCROLL: progress bar + nav =====
-        window.addEventListener('scroll', () => {
-            const scrollTop = window.scrollY;
-            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-            progressBar.style.width = (scrollTop / docHeight) * 100 + '%';
-            navbar.classList.toggle('scrolled', scrollTop > 50);
-        }, { passive: true });
+        let ticking = false;
+        function onScroll() {
+            if (ticking) return;
+            ticking = true;
+            requestAnimationFrame(() => {
+                const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+                const p = docHeight > 0 ? window.scrollY / docHeight : 0;
+                progressBar.style.transform = 'scaleX(' + p + ')';
+                navbar.classList.toggle('scrolled', window.scrollY > 50);
+                ticking = false;
+            });
+        }
+        window.addEventListener('scroll', onScroll, { passive: true });
+        onScroll();
 
-        // ===== MOBILE TOGGLE =====
-        mobileToggle.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
+        // ===== MOBILE MENU =====
+        function setMenu(open) {
+            navLinks.classList.toggle('active', open);
+            mobileToggle.setAttribute('aria-expanded', String(open));
+            mobileToggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+        }
+
+        mobileToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            setMenu(!navLinks.classList.contains('active'));
         });
 
-        // Close mobile nav on outside click
         document.addEventListener('click', (e) => {
-            if (!navbar.contains(e.target)) navLinks.classList.remove('active');
+            if (!navbar.contains(e.target)) setMenu(false);
         });
 
-        // ===== SMOOTH SCROLL + CLOSE MOBILE NAV =====
-        document.querySelectorAll('.nav-links a, .btn-primary[href^="#"]').forEach(link => {
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && navLinks.classList.contains('active')) {
+                setMenu(false);
+                mobileToggle.focus();
+            }
+        });
+
+        // ===== SMOOTH SCROLL =====
+        document.querySelectorAll('a[href^="#"]').forEach(link => {
             link.addEventListener('click', (e) => {
                 const href = link.getAttribute('href');
-                if (href && href.startsWith('#')) {
-                    e.preventDefault();
-                    navLinks.classList.remove('active');
-                    const target = document.querySelector(href);
-                    if (target) target.scrollIntoView({ behavior: 'smooth' });
-                }
+                if (!href || href.length < 2) return;
+                const target = document.querySelector(href);
+                if (!target) return;
+                e.preventDefault();
+                setMenu(false);
+                target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth' });
             });
         });
 
-        // ===== ACTIVE NAV + URL HASH TRACKING =====
-        const sections = document.querySelectorAll('section[id]');
+        // ===== SCROLL SPY =====
+        const sections   = document.querySelectorAll('main section[id]');
         const navAnchors = document.querySelectorAll('.nav-links a');
 
-        const sectionObserver = new IntersectionObserver((entries) => {
+        const spy = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const id = entry.target.getAttribute('id');
-                    navAnchors.forEach(a => {
-                        a.classList.toggle('active', a.getAttribute('href') === '#' + id);
-                    });
-                    // Silently update hash without triggering a scroll jump
-                    if (id !== 'hero') {
-                        history.replaceState(null, '', '#' + id);
-                    } else {
-                        history.replaceState(null, '', window.location.pathname);
-                    }
-                }
+                if (!entry.isIntersecting) return;
+                const id = entry.target.id;
+                navAnchors.forEach(a => {
+                    const active = a.getAttribute('href') === '#' + id;
+                    a.classList.toggle('active', active);
+                    if (active) a.setAttribute('aria-current', 'true');
+                    else a.removeAttribute('aria-current');
+                });
+                const newHash = id === 'hero' ? window.location.pathname : '#' + id;
+                history.replaceState(null, '', newHash);
             });
         }, { threshold: 0.4 });
 
-        sections.forEach(s => sectionObserver.observe(s));
+        sections.forEach(s => spy.observe(s));
 
         // ===== SCROLL REVEAL =====
-        const revealObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
+        const items = document.querySelectorAll('.reveal');
+        let revealObserver = null;
+
+        if (reduceMotion) {
+            items.forEach(el => el.classList.add('visible'));
+        } else {
+            revealObserver = new IntersectionObserver((entries, obs) => {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) return;
                     entry.target.classList.add('visible');
-                    // Trigger metric counter if applicable
-                    const counter = entry.target.querySelector('[data-count]');
-                    if (counter) animateCounter(counter);
-                }
-            });
-        }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+                    obs.unobserve(entry.target);
+                });
+            }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
 
-        document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
-
-        // ===== METRIC COUNTER ANIMATION =====
-        function animateCounter(el) {
-            if (el.dataset.animated) return;
-            el.dataset.animated = 'true';
-            const target = el.dataset.count;
-            // Only animate purely numeric targets
-            if (!/^\d+$/.test(target)) return;
-            const end = parseInt(target);
-            const duration = 1200;
-            const start = performance.now();
-            const from = Math.max(0, end - 30);
-            function tick(now) {
-                const elapsed = now - start;
-                const progress = Math.min(elapsed / duration, 1);
-                const ease = 1 - Math.pow(1 - progress, 3);
-                el.textContent = Math.round(from + (end - from) * ease);
-                if (progress < 1) requestAnimationFrame(tick);
-            }
-            requestAnimationFrame(tick);
+            items.forEach(el => revealObserver.observe(el));
         }
 
-        // ===== GITHUB FETCH with XSS sanitization =====
+        // ===== GITHUB FETCH (cached to survive rate limit) =====
         function sanitize(str) {
             if (!str) return '';
-            return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+            return String(str)
+                .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
         }
 
         async function fetchProjects() {
             const grid = document.getElementById('projectsGrid');
-            try {
-                const res = await fetch('https://api.github.com/users/ElvijsCoder/repos?sort=updated&per_page=6');
-                if (!res.ok) throw new Error('Fetch failed');
-                const repos = await res.json();
+            if (!grid) return;
 
-                if (repos.length === 0) {
-                    grid.innerHTML = `<div class="projects-empty"><p>No public repositories yet.</p><a href="https://github.com/ElvijsCoder" target="_blank">Visit GitHub Profile →</a></div>`;
+            const CACHE_KEY = 'gh-repos-v1';
+            const CACHE_TTL = 1000 * 60 * 30;
+
+            try {
+                let repos = null;
+                try {
+                    const cached = JSON.parse(sessionStorage.getItem(CACHE_KEY) || 'null');
+                    if (cached && Date.now() - cached.t < CACHE_TTL) repos = cached.d;
+                } catch (e) {}
+
+                if (!repos) {
+                    const res = await fetch(
+                        'https://api.github.com/users/ElvijsCoder/repos?sort=updated&per_page=6',
+                        { headers: { Accept: 'application/vnd.github+json' } }
+                    );
+                    if (!res.ok) throw new Error('Fetch failed: ' + res.status);
+                    repos = await res.json();
+                    try {
+                        sessionStorage.setItem(CACHE_KEY, JSON.stringify({ t: Date.now(), d: repos }));
+                    } catch (e) {}
+                }
+
+                if (!repos.length) {
+                    grid.innerHTML =
+                        '<div class="projects-empty"><p>No public repositories yet.</p>' +
+                        '<a href="https://github.com/ElvijsCoder" target="_blank" rel="noopener noreferrer">Visit GitHub Profile →</a></div>';
                     return;
                 }
 
@@ -1556,40 +1634,48 @@
 
                 grid.innerHTML = repos.map(repo => {
                     const color = langColors[repo.language] || '#8b8b8b';
-                    const name = sanitize(repo.name);
-                    const desc = sanitize(repo.description);
-                    const lang = sanitize(repo.language);
-                    const url = sanitize(repo.html_url);
-                    return `
-                        <div class="project-card reveal">
-                            <div class="project-header">
-                                <h3 class="project-name">
-                                    <a href="${url}" target="_blank" rel="noopener noreferrer">${name}</a>
-                                </h3>
-                                <div class="project-stars">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="#ffd700"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                                    ${repo.stargazers_count}
-                                </div>
-                            </div>
-                            <p class="project-desc">${desc || 'No description available'}</p>
-                            <div class="project-footer">
-                                <div class="project-lang">
-                                    <span class="lang-dot" style="background: ${color}"></span>
-                                    ${lang || 'Unknown'}
-                                </div>
-                                <a href="${url}" target="_blank" rel="noopener noreferrer" class="project-link">View Code →</a>
-                            </div>
-                        </div>`;
+                    const name  = sanitize(repo.name);
+                    const desc  = sanitize(repo.description);
+                    const lang  = sanitize(repo.language);
+                    const url   = sanitize(repo.html_url);
+                    const stars = Number(repo.stargazers_count) || 0;
+                    return '' +
+                        '<div class="project-card reveal">' +
+                            '<div class="project-header">' +
+                                '<h3 class="project-name">' +
+                                    '<a href="' + url + '" target="_blank" rel="noopener noreferrer">' + name + '</a>' +
+                                '</h3>' +
+                                '<div class="project-stars" aria-label="' + stars + ' stars">' +
+                                    '<svg width="14" height="14" viewBox="0 0 24 24" fill="#ffd700" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>' +
+                                    stars +
+                                '</div>' +
+                            '</div>' +
+                            '<p class="project-desc">' + (desc || 'No description available') + '</p>' +
+                            '<div class="project-footer">' +
+                                '<div class="project-lang">' +
+                                    '<span class="lang-dot" style="background: ' + color + '"></span>' +
+                                    (lang || 'Unknown') +
+                                '</div>' +
+                                '<a href="' + url + '" target="_blank" rel="noopener noreferrer" class="project-link">View Code →</a>' +
+                            '</div>' +
+                        '</div>';
                 }).join('');
 
-                document.querySelectorAll('#projectsGrid .reveal').forEach(el => revealObserver.observe(el));
-
+                const newCards = grid.querySelectorAll('.reveal');
+                if (revealObserver) {
+                    newCards.forEach(el => revealObserver.observe(el));
+                } else {
+                    newCards.forEach(el => el.classList.add('visible'));
+                }
             } catch (err) {
-                grid.innerHTML = `<div class="projects-empty"><p>Unable to load GitHub repositories.</p><a href="https://github.com/ElvijsCoder" target="_blank">Visit GitHub Profile →</a></div>`;
+                grid.innerHTML =
+                    '<div class="projects-empty"><p>Unable to load GitHub repositories right now.</p>' +
+                    '<a href="https://github.com/ElvijsCoder" target="_blank" rel="noopener noreferrer">Visit GitHub Profile →</a></div>';
             }
         }
 
         fetchProjects();
+    })();
     </script>
 </body>
 </html>
