@@ -1,6 +1,6 @@
 /* =========================================================
    Elvijs Strads — Portfolio
-   GSAP + Lenis + node canvas + counters + role rotator
+   GSAP + Lenis + canvas + counters + rotator + Tier 2 craft
    ========================================================= */
 (function () {
     'use strict';
@@ -391,7 +391,132 @@
     })();
 
     /* ---------------------------------------------------------
-       11. GITHUB FETCH
+       11. TIER 2 — CRAFT LAYER
+       --------------------------------------------------------- */
+
+    /* ----- 11a. Magnetic buttons ----- */
+    (function magneticButtons() {
+        if (!finePointer || reduceMotion) return;
+
+        document.querySelectorAll('[data-magnetic]').forEach(el => {
+            const maxOffset = 7;
+            let raf = null;
+            let targetX = 0, targetY = 0;
+            let currentX = 0, currentY = 0;
+
+            function loop() {
+                currentX += (targetX - currentX) * 0.18;
+                currentY += (targetY - currentY) * 0.18;
+
+                if (Math.abs(targetX - currentX) < 0.1 && Math.abs(targetY - currentY) < 0.1) {
+                    currentX = targetX;
+                    currentY = targetY;
+                    el.style.transform = 'translate3d(' + currentX + 'px, ' + currentY + 'px, 0)';
+                    raf = null;
+                    return;
+                }
+
+                el.style.transform = 'translate3d(' + currentX + 'px, ' + currentY + 'px, 0)';
+                raf = requestAnimationFrame(loop);
+            }
+
+            el.addEventListener('pointermove', (e) => {
+                const r = el.getBoundingClientRect();
+                const dx = (e.clientX - (r.left + r.width / 2)) / (r.width / 2);
+                const dy = (e.clientY - (r.top + r.height / 2)) / (r.height / 2);
+                targetX = Math.max(-1, Math.min(1, dx)) * maxOffset;
+                targetY = Math.max(-1, Math.min(1, dy)) * maxOffset;
+                if (!raf) raf = requestAnimationFrame(loop);
+            }, { passive: true });
+
+            el.addEventListener('pointerleave', () => {
+                targetX = 0;
+                targetY = 0;
+                if (!raf) raf = requestAnimationFrame(loop);
+            });
+        });
+    })();
+
+    /* ----- 11b. Card cursor glow ----- */
+    (function cardGlow() {
+        if (!finePointer || reduceMotion) return;
+
+        document.querySelectorAll('[data-glow]').forEach(card => {
+            card.addEventListener('pointermove', (e) => {
+                const r = card.getBoundingClientRect();
+                card.style.setProperty('--gx', (e.clientX - r.left) + 'px');
+                card.style.setProperty('--gy', (e.clientY - r.top) + 'px');
+            }, { passive: true });
+        });
+    })();
+
+    /* ----- 11c. Copy email + toast ----- */
+    const toastEl = document.getElementById('toast');
+    let toastTimer = null;
+
+    function showToast(message) {
+        if (!toastEl) return;
+        toastEl.textContent = message;
+        toastEl.classList.add('is-visible');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => {
+            toastEl.classList.remove('is-visible');
+        }, 2400);
+    }
+
+    async function copyText(value) {
+        try {
+            await navigator.clipboard.writeText(value);
+            return true;
+        } catch (e) {
+            // Fallback for non-secure contexts / older browsers
+            const ta = document.createElement('textarea');
+            ta.value = value;
+            ta.setAttribute('readonly', '');
+            ta.style.position = 'fixed';
+            ta.style.opacity = '0';
+            document.body.appendChild(ta);
+            ta.select();
+            let ok = false;
+            try { ok = document.execCommand('copy'); } catch (e2) { ok = false; }
+            ta.remove();
+            return ok;
+        }
+    }
+
+    document.querySelectorAll('[data-copy-email]').forEach(btn => {
+        btn.addEventListener('click', async () => {
+            const email = btn.getAttribute('data-copy-email');
+            const ok = await copyText(email);
+            showToast(ok ? 'Email copied to clipboard' : 'Copy failed — ' + email);
+        });
+    });
+
+    /* ----- 11d. Certification flip cards ----- */
+    (function certFlips() {
+        document.querySelectorAll('[data-flip]').forEach(card => {
+            function toggle() {
+                const next = card.getAttribute('aria-pressed') !== 'true';
+                card.setAttribute('aria-pressed', String(next));
+            }
+
+            card.addEventListener('click', (e) => {
+                // Don't flip when clicking an interactive element inside the card
+                if (e.target.closest('a, button')) return;
+                toggle();
+            });
+
+            card.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    toggle();
+                }
+            });
+        });
+    })();
+
+    /* ---------------------------------------------------------
+       12. GITHUB FETCH
        --------------------------------------------------------- */
     function sanitize(str) {
         if (!str) return '';
@@ -447,7 +572,7 @@
                 const url   = sanitize(repo.html_url);
                 const stars = Number(repo.stargazers_count) || 0;
                 return '' +
-                    '<div class="project-card reveal">' +
+                    '<div class="project-card reveal" data-glow>' +
                         '<div class="project-header">' +
                             '<h3 class="project-name">' +
                                 '<a href="' + url + '" target="_blank" rel="noopener noreferrer">' + name + '</a>' +
@@ -469,6 +594,7 @@
             }).join('');
 
             const newCards = grid.querySelectorAll('.reveal');
+
             if (hasGsap && !reduceMotion) {
                 newCards.forEach((el, i) => {
                     gsap.fromTo(el,
@@ -478,6 +604,17 @@
                 });
             } else {
                 newCards.forEach(el => el.classList.add('visible'));
+            }
+
+            // Wire glow on the freshly rendered project cards
+            if (finePointer && !reduceMotion) {
+                grid.querySelectorAll('[data-glow]').forEach(card => {
+                    card.addEventListener('pointermove', (e) => {
+                        const r = card.getBoundingClientRect();
+                        card.style.setProperty('--gx', (e.clientX - r.left) + 'px');
+                        card.style.setProperty('--gy', (e.clientY - r.top) + 'px');
+                    }, { passive: true });
+                });
             }
         } catch (err) {
             grid.innerHTML =
